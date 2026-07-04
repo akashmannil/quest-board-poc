@@ -84,3 +84,5 @@ The visual identity is **neon arcade × Minecraft**: Press Start 2P + VT323 pixe
 fonts, a code-drawn pixel shield-and-sword logo, beveled push-in buttons, segmented
 XP bars, CRT scanlines, and a hand-drawn 8×8 pixel icon set (`src/components/PixelIcon.jsx`)
 — no icon libraries, no image assets.
+
+Akash Mannil
