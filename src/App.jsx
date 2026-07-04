@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { AppProvider } from "./state/AppState.jsx";
 import DayControls from "./components/DayControls.jsx";
+import PixelIcon from "./components/PixelIcon.jsx";
+import Logo from "./components/Logo.jsx";
 import QuestBoard from "./views/QuestBoard.jsx";
 import PromoterDashboard from "./views/PromoterDashboard.jsx";
 import DevHQ from "./views/DevHQ.jsx";
 import TrustSafety from "./views/TrustSafety.jsx";
 
 const TABS = [
-  { id: "board", label: "🗺️ Quest Board" },
-  { id: "promoter", label: "📈 My Dashboard" },
-  { id: "dev", label: "🎮 Dev HQ" },
-  { id: "trust", label: "🛡️ Trust & Safety" },
+  { id: "board", label: "Quest Board", icon: "map" },
+  { id: "promoter", label: "My Dashboard", icon: "chart" },
+  { id: "dev", label: "Dev HQ", icon: "gamepad" },
+  { id: "trust", label: "Trust & Safety", icon: "shield" },
 ];
 
 export default function App() {
@@ -20,11 +22,14 @@ export default function App() {
     <AppProvider>
       <div className="shell">
         <header className="topbar">
-          <div>
-            <h1 className="logo">
-              Quest<span>Board</span>
-            </h1>
-            <p className="tagline">Promote indie games. Level up. Get paid.</p>
+          <div className="logo-lockup">
+            <Logo size={42} />
+            <div>
+              <h1 className="logo">
+                QUEST<span>BOARD</span>
+              </h1>
+              <p className="tagline">PROMOTE INDIE GAMES · LEVEL UP · GET PAID</p>
+            </div>
           </div>
           <nav className="nav">
             {TABS.map((t) => (
@@ -33,6 +38,7 @@ export default function App() {
                 className={tab === t.id ? "active" : ""}
                 onClick={() => setTab(t.id)}
               >
+                <PixelIcon name={t.icon} size={14} />
                 {t.label}
               </button>
             ))}

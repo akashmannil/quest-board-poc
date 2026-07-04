@@ -1,45 +1,60 @@
-/* ------------------------------------------------------------------ */
-/* QuestBoard design tokens — dark, neon-accented indie gaming theme  */
-/* ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+/* QuestBoard design system — neon arcade × Minecraft.                       */
+/* Pixel fonts, square corners, chunky beveled panels (light top-left, dark  */
+/* bottom-right, like a Minecraft button), and neon glow on everything that  */
+/* matters. All colors are design tokens; the glow is layered box/text       */
+/* shadows, never images.                                                    */
+/* ------------------------------------------------------------------------ */
 
 :root {
-  /* surfaces */
-  --bg: #0d0f14;
-  --surface: #151823;
-  --surface-2: #1c2030;
-  --border: #2a3047;
+  /* surfaces — deep violet-black "night level" */
+  --bg: #07060f;
+  --surface: #14102a;
+  --surface-2: #1d1738;
+  --border: #362a63;
 
   /* text */
-  --text: #e8eaf2;
-  --text-dim: #9aa1b5;
-  --text-faint: #626a80;
+  --text: #eee9ff;
+  --text-dim: #a89fd0;
+  --text-faint: #6f66a0;
 
-  /* brand + semantic */
-  --accent: #7c5cff;
-  --accent-soft: rgba(124, 92, 255, 0.14);
-  --green: #3ecf8e;
-  --green-soft: rgba(62, 207, 142, 0.12);
-  --amber: #f5b342;
-  --amber-soft: rgba(245, 179, 66, 0.12);
-  --red: #ff5d6c;
-  --red-soft: rgba(255, 93, 108, 0.12);
-  --cyan: #4cc9f0;
+  /* neon set */
+  --neon-pink: #ff2ec4;
+  --neon-cyan: #00f0ff;
+  --neon-green: #39ff14;
+  --neon-amber: #ffc933;
+  --neon-red: #ff4060;
+  --neon-purple: #a66bff;
 
-  /* chart series — validated for the dark surface (CVD ΔE 35+, ≥3:1) */
+  /* semantic (kept from the old theme's names so components don't change) */
+  --accent: var(--neon-purple);
+  --accent-soft: rgba(166, 107, 255, 0.14);
+  --green: var(--neon-green);
+  --green-soft: rgba(57, 255, 20, 0.1);
+  --amber: var(--neon-amber);
+  --amber-soft: rgba(255, 201, 51, 0.1);
+  --red: var(--neon-red);
+  --red-soft: rgba(255, 64, 96, 0.1);
+  --cyan: var(--neon-cyan);
+
+  /* chart series — validated for surface #14102a (CVD ΔE 35+, ≥3:1) */
   --chart-1: #7c5cff;
   --chart-2: #1d9fd1;
   --chart-3: #26a269;
   --chart-4: #c98500;
-  --chart-grid: #1e2335;
-  --chart-baseline: #2a3047;
+  --chart-grid: #221a44;
+  --chart-baseline: #362a63;
 
-  --radius: 10px;
-  --radius-sm: 6px;
-  --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  /* pixel-bevel building blocks */
+  --bevel-light: rgba(255, 255, 255, 0.09);
+  --bevel-dark: rgba(0, 0, 0, 0.6);
 
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
+  --font-pixel: "Press Start 2P", "Courier New", monospace;
+  --font-body: "VT323", Consolas, monospace;
+
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: 1.35;
   color-scheme: dark;
 }
 
@@ -49,27 +64,83 @@
 
 body {
   margin: 0;
-  background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  background:
+    radial-gradient(1100px 500px at 50% -8%, rgba(166, 107, 255, 0.16), transparent 65%),
+    radial-gradient(900px 500px at 85% 110%, rgba(0, 240, 255, 0.07), transparent 60%),
+    var(--bg);
+}
+
+/* faint pixel grid behind everything */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* CRT scanlines over everything, very quiet */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.16) 0 1px,
+    transparent 1px 3px
+  );
 }
 
 h1, h2, h3, h4 {
   margin: 0;
-  line-height: 1.25;
+  line-height: 1.35;
+  font-family: var(--font-pixel);
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 15px;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 p {
   margin: 0;
 }
 
+.px-icon {
+  vertical-align: -2px;
+  flex: none;
+}
+
 button {
-  font: inherit;
+  font: 10px var(--font-pixel);
+  text-transform: uppercase;
   cursor: pointer;
-  border: none;
-  border-radius: var(--radius-sm);
+  border: 2px solid #000;
+  border-radius: 0;
   background: var(--surface-2);
   color: var(--text);
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset -2px -2px 0 var(--bevel-light),
+    inset 2px 2px 0 var(--bevel-dark);
 }
 
 /* ---------------- app shell ---------------- */
@@ -85,52 +156,88 @@ button {
   align-items: center;
   gap: 24px;
   padding: 18px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  box-shadow: 0 2px 0 rgba(166, 107, 255, 0.15);
   margin-bottom: 28px;
   flex-wrap: wrap;
 }
 
+.logo-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-mark {
+  filter: drop-shadow(0 0 6px rgba(255, 46, 196, 0.6));
+}
+
 .logo {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 0.4px;
+  font-family: var(--font-pixel);
+  font-size: 17px;
+  letter-spacing: 1px;
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px rgba(255, 46, 196, 0.7);
+  animation: logo-flicker 4s infinite;
 }
 
 .logo span {
-  color: var(--accent);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+}
+
+@keyframes logo-flicker {
+  0%, 6%, 8%, 100% { opacity: 1; }
+  7% { opacity: 0.6; }
+  62%, 64% { opacity: 1; }
+  63% { opacity: 0.75; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo { animation: none; }
 }
 
 .tagline {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-faint);
+  margin-top: 4px;
+  letter-spacing: 1px;
 }
 
 .nav {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   margin-left: auto;
   flex-wrap: wrap;
 }
 
 .nav button {
-  padding: 8px 14px;
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--surface);
   color: var(--text-dim);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 9px;
 }
 
 .nav button:hover {
-  background: var(--surface-2);
   color: var(--text);
+  border-color: var(--border);
 }
 
 .nav button.active {
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--surface-2);
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark),
+    0 0 12px rgba(0, 240, 255, 0.35);
 }
 
-/* ---------------- day controls ---------------- */
+/* ---------------- day controls (the HUD) ---------------- */
 
 .day-controls {
   display: flex;
@@ -140,23 +247,27 @@ button {
 }
 
 .day-badge {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--cyan);
-  background: rgba(76, 201, 240, 0.1);
-  border: 1px solid rgba(76, 201, 240, 0.3);
-  border-radius: 999px;
-  padding: 5px 12px;
-  min-width: 64px;
+  font: 10px var(--font-pixel);
+  text-transform: uppercase;
+  color: var(--neon-amber);
+  text-shadow: 0 0 8px rgba(255, 201, 51, 0.6);
+  background: #000;
+  border: 2px solid var(--neon-amber);
+  padding: 8px 12px;
+  min-width: 80px;
   text-align: center;
+  box-shadow: 0 0 12px rgba(255, 201, 51, 0.25);
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: linear-gradient(180deg, #c04dff, #7c2eff);
   color: #fff;
-  font-weight: 700;
-  padding: 8px 14px;
-  font-size: 13px;
+  text-shadow: 1px 1px 0 #000;
+  padding: 10px 14px;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.25),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.45),
+    0 0 14px rgba(166, 107, 255, 0.5);
 }
 
 .btn-primary:hover {
@@ -164,47 +275,67 @@ button {
 }
 
 .btn-toggle {
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 10px 14px;
   color: var(--text-dim);
 }
 
 .btn-toggle.on {
-  background: var(--green-soft);
-  color: var(--green);
+  background: #062d0c;
+  color: var(--neon-green);
+  border-color: var(--neon-green);
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark),
+    0 0 12px rgba(57, 255, 20, 0.3);
 }
 
 .btn-ghost {
   background: transparent;
+  border-color: transparent;
+  box-shadow: none;
   color: var(--text-faint);
-  padding: 8px 10px;
-  font-size: 13px;
+  padding: 10px 8px;
 }
 
 .btn-ghost:hover {
   color: var(--text);
 }
 
-/* ---------------- shared primitives ---------------- */
+/* ---------------- shared panels ---------------- */
+
+.card,
+.stat-tile {
+  background: var(--surface);
+  border: 2px solid #000;
+  border-radius: 0;
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark),
+    0 0 0 1px var(--border),
+    0 0 20px rgba(166, 107, 255, 0.08);
+}
 
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
   padding: 20px;
 }
 
 .view-intro {
   margin-bottom: 24px;
   display: grid;
-  gap: 6px;
-  max-width: 720px;
+  gap: 10px;
+  max-width: 760px;
+}
+
+.view-intro h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .view-intro p {
   color: var(--text-dim);
-  font-size: 14px;
+  font-size: 18px;
 }
 
 /* ---------------- quest board ---------------- */
@@ -217,21 +348,29 @@ button {
 
 .quest-card {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 2px solid #000;
+  border-radius: 0;
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark),
+    0 0 0 1px var(--border);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.15s, border-color 0.15s;
+  transition: box-shadow 0.15s;
 }
 
 .quest-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent);
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark),
+    0 0 0 1px var(--neon-purple),
+    0 0 20px rgba(166, 107, 255, 0.45);
 }
 
 .quest-card.closed {
-  opacity: 0.65;
+  opacity: 0.55;
+  filter: saturate(0.6);
 }
 
 .quest-art {
@@ -239,23 +378,38 @@ button {
   display: grid;
   place-items: center;
   position: relative;
+  border-bottom: 2px solid #000;
+}
+
+/* scanline wash over the key art, arcade-cabinet style */
+.quest-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0 2px,
+    transparent 2px 4px
+  );
+  pointer-events: none;
 }
 
 .quest-emoji {
   font-size: 52px;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.35));
 }
 
 .quest-closed-badge {
   position: absolute;
   bottom: 8px;
   right: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  background: rgba(0, 0, 0, 0.55);
-  color: var(--amber);
-  padding: 3px 8px;
-  border-radius: 999px;
+  z-index: 1;
+  font: 8px var(--font-pixel);
+  text-transform: uppercase;
+  background: #000;
+  color: var(--neon-amber);
+  padding: 5px 8px;
+  border: 1px solid var(--neon-amber);
 }
 
 .quest-body {
@@ -267,12 +421,14 @@ button {
 }
 
 .quest-body h3 {
-  font-size: 17px;
+  font-size: 12px;
+  color: var(--text);
 }
 
 .quest-studio {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-faint);
+  margin-top: 4px;
 }
 
 .quest-tags {
@@ -282,46 +438,59 @@ button {
 }
 
 .tag {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--cyan);
-  background: rgba(76, 201, 240, 0.1);
-  padding: 2px 8px;
-  border-radius: 999px;
+  font-size: 15px;
+  color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  padding: 1px 8px;
 }
 
 .quest-pitch {
-  font-size: 13px;
+  font-size: 17px;
   color: var(--text-dim);
 }
 
 .quest-bounties {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--green);
+  font-size: 16px;
+  color: var(--neon-green);
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.4);
 }
 
 .quest-budget {
   display: grid;
-  gap: 5px;
-  font-size: 12px;
+  gap: 6px;
+  font-size: 15px;
   color: var(--text-faint);
 }
 
+/* segmented Minecraft-XP-style bar */
 .quest-budget-bar {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--surface-2);
+  height: 10px;
+  background: #000;
+  border: 1px solid var(--border);
+  position: relative;
   overflow: hidden;
 }
 
 .quest-budget-bar div {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--cyan));
-  border-radius: 999px;
+  background: linear-gradient(180deg, #6dff4a, #1fbf00);
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+}
+
+.quest-budget-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 8px,
+    #000 8px 10px
+  );
+  pointer-events: none;
 }
 
 .quest-hunters {
@@ -332,92 +501,142 @@ button {
 }
 
 .quest-hunters-label {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-faint);
   margin-left: 6px;
 }
 
 .quest-accept {
   width: 100%;
-  padding: 10px;
+  padding: 12px 8px;
+  background: linear-gradient(180deg, #c04dff, #7c2eff);
+  color: #fff;
+  text-shadow: 1px 1px 0 #000;
+  font-size: 9px;
+  line-height: 1.6;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.25),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.45),
+    0 0 12px rgba(166, 107, 255, 0.4);
+}
+
+.quest-accept:hover {
+  filter: brightness(1.15);
 }
 
 .quest-accept:disabled {
   background: var(--surface-2);
   color: var(--text-faint);
   cursor: not-allowed;
+  text-shadow: none;
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark);
 }
 
 .quest-accepted {
   display: grid;
   gap: 8px;
-  font-size: 12px;
-  color: var(--green);
+  font-size: 16px;
+  color: var(--neon-green);
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.4);
 }
 
 .quest-link {
-  font-family: Consolas, monospace;
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  text-transform: none;
   text-align: left;
   padding: 8px 10px;
-  background: var(--surface-2);
-  border: 1px dashed var(--border);
-  color: var(--cyan);
+  background: #000;
+  border: 1px dashed var(--neon-cyan);
+  color: var(--neon-cyan);
   overflow-wrap: anywhere;
+  box-shadow: none;
 }
 
 .quest-link:hover {
-  border-color: var(--cyan);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
 }
 
 /* ---------------- dashboard ---------------- */
 
 .nudge {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  border-radius: var(--radius);
+  background: var(--surface);
+  border: 2px solid var(--neon-purple);
   padding: 14px 18px;
-  font-size: 14px;
+  font-size: 18px;
   margin-bottom: 20px;
+  box-shadow: 0 0 16px rgba(166, 107, 255, 0.3);
 }
 
 .stat-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
   margin-bottom: 20px;
 }
 
 .stat-tile {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
   padding: 14px 16px;
   display: grid;
-  gap: 4px;
+  gap: 6px;
   align-content: start;
 }
 
 .stat-label {
-  font-size: 12px;
+  font: 8px var(--font-pixel);
+  text-transform: uppercase;
+  letter-spacing: 1px;
   color: var(--text-faint);
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .stat-value {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.1;
+  color: var(--text);
 }
 
 .stat-sub {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-dim);
 }
 
 .tier-chip {
-  font-size: 13px;
-  font-weight: 700;
+  font: 8px var(--font-pixel);
+  text-transform: uppercase;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  vertical-align: 3px;
+}
+
+/* Minecraft-style XP bar for tier progress */
+.xp-bar {
+  height: 8px;
+  background: #000;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.xp-bar div {
+  height: 100%;
+  background: linear-gradient(180deg, #6dff4a, #1fbf00);
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+}
+
+.xp-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 6px, #000 6px 8px);
+  pointer-events: none;
 }
 
 .dash-grid {
@@ -433,19 +652,26 @@ button {
 }
 
 .card h3 {
-  font-size: 15px;
-  margin-bottom: 4px;
+  font-size: 10px;
+  color: var(--neon-purple);
+  text-shadow: 0 0 8px rgba(166, 107, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .chart-sub {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-faint);
   margin-bottom: 10px;
 }
 
 .empty-note {
   color: var(--text-faint);
-  font-size: 13px;
+  font-size: 17px;
   padding: 12px 0;
 }
 
@@ -463,30 +689,30 @@ button {
 
 .chart-wrap .tick {
   fill: var(--text-faint);
-  font-size: 11px;
+  font-family: var(--font-body);
+  font-size: 13px;
 }
 
 .chart-wrap .tick.faint {
-  opacity: 0.75;
-  font-size: 10px;
+  opacity: 0.8;
+  font-size: 12px;
 }
 
 .chart-wrap .dot-label {
   fill: var(--text);
-  font-size: 11px;
-  font-weight: 700;
+  font-family: var(--font-pixel);
+  font-size: 7px;
 }
 
 .chart-tooltip {
   position: absolute;
   top: 10px;
   pointer-events: none;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow);
+  background: #000;
+  border: 1px solid var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
   padding: 8px 10px;
-  font-size: 12px;
+  font-size: 16px;
   display: grid;
   gap: 4px;
   min-width: 110px;
@@ -495,7 +721,6 @@ button {
 
 .tt-title {
   color: var(--text-faint);
-  font-weight: 600;
 }
 
 .tt-row {
@@ -505,13 +730,14 @@ button {
 }
 
 .tt-row strong {
-  font-size: 13px;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--text);
 }
 
 .tt-key {
   width: 12px;
   height: 3px;
-  border-radius: 2px;
   flex: none;
 }
 
@@ -529,34 +755,33 @@ button {
 }
 
 .game-picker button {
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 10px 12px;
+  font-size: 8px;
   color: var(--text-dim);
   background: var(--surface);
-  border: 1px solid var(--border);
 }
 
 .game-picker button.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--text);
+  color: var(--neon-pink);
+  border-color: var(--neon-pink);
+  text-shadow: 0 0 8px rgba(255, 46, 196, 0.6);
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark),
+    0 0 12px rgba(255, 46, 196, 0.3);
 }
 
 .share-cell {
   min-width: 140px;
 }
 
-.share-num {
-  font-variant-numeric: tabular-nums;
-}
-
 .share-bar {
   display: block;
-  height: 5px;
+  height: 7px;
   margin-top: 5px;
-  background: var(--surface-2);
-  border-radius: 999px;
+  background: #000;
+  border: 1px solid var(--border);
+  position: relative;
   overflow: hidden;
 }
 
@@ -564,7 +789,15 @@ button {
   display: block;
   height: 100%;
   background: var(--chart-2);
-  border-radius: 999px;
+  box-shadow: 0 0 6px rgba(29, 159, 209, 0.7);
+}
+
+.share-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 6px, #000 6px 8px);
+  pointer-events: none;
 }
 
 /* ---------------- trust & safety ---------------- */
@@ -583,23 +816,24 @@ button {
 }
 
 .defense-card p {
-  font-size: 13px;
+  font-size: 17px;
   color: var(--text-dim);
 }
 
 .defense-badge {
   justify-self: start;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--surface-2);
+  font: 7px var(--font-pixel);
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  background: #000;
   color: var(--text-faint);
 }
 
 .defense-badge.live {
-  background: var(--green-soft);
-  color: var(--green);
+  color: var(--neon-green);
+  border-color: var(--neon-green);
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.5);
 }
 
 .flag-detail {
@@ -616,21 +850,21 @@ button {
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 17px;
 }
 
 .data-table th {
   text-align: left;
-  font-size: 11px;
+  font: 8px var(--font-pixel);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   color: var(--text-faint);
   padding: 8px 10px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
 }
 
 .data-table td {
-  padding: 9px 10px;
+  padding: 8px 10px;
   border-bottom: 1px solid var(--chart-grid);
   vertical-align: top;
 }
@@ -641,26 +875,38 @@ button {
 
 .data-table .num {
   text-align: right;
-  font-variant-numeric: tabular-nums;
 }
 
 .data-table .is-you {
-  background: var(--accent-soft);
+  background: rgba(166, 107, 255, 0.12);
+  box-shadow: inset 2px 0 0 var(--neon-purple);
 }
 
 .cell-sub {
   display: block;
-  font-size: 11px;
+  font-size: 14px;
   color: var(--text-faint);
 }
 
 .status {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 15px;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.status.settled { color: var(--green); }
-.status.pending { color: var(--amber); }
-.status.voided  { color: var(--red); }
+.status.settled {
+  color: var(--neon-green);
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.4);
+}
 
+.status.pending {
+  color: var(--neon-amber);
+  text-shadow: 0 0 6px rgba(255, 201, 51, 0.4);
+}
+
+.status.voided {
+  color: var(--neon-red);
+  text-shadow: 0 0 6px rgba(255, 64, 96, 0.4);
+}
