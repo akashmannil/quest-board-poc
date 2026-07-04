@@ -122,6 +122,62 @@ button {
   color: var(--accent);
 }
 
+/* ---------------- day controls ---------------- */
+
+.day-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.day-badge {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cyan);
+  background: rgba(76, 201, 240, 0.1);
+  border: 1px solid rgba(76, 201, 240, 0.3);
+  border-radius: 999px;
+  padding: 5px 12px;
+  min-width: 64px;
+  text-align: center;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.15);
+}
+
+.btn-toggle {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.btn-toggle.on {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-faint);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+}
+
 /* ---------------- shared primitives ---------------- */
 
 .card {

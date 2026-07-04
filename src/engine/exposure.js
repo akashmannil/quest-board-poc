@@ -84,11 +84,18 @@ export function nextTier(score) {
   return TIERS.find((t) => t.min > score) ?? null;
 }
 
+// --- daily gain soft cap ---
+// Without a cap, a huge account would gain hundreds of points a day and blow
+// past the curve in a week. tanh() keeps small gains almost untouched but
+// compresses big days toward the cap — reputation must be earned over time.
+export const DAILY_GAIN_CAP = 15;
+
 // Total score gained for a day's worth of outcome counts, streak included.
 export function scoreGainForOutcomes(counts, streakDays) {
   let base = 0;
   for (const [type, n] of Object.entries(counts)) {
     base += (EVENT_TYPES[type]?.scoreGain ?? 0) * n;
   }
-  return base * streakMultiplier(streakDays);
+  const raw = base * streakMultiplier(streakDays);
+  return DAILY_GAIN_CAP * Math.tanh(raw / DAILY_GAIN_CAP);
 }

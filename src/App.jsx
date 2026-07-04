@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { AppProvider } from "./state/AppState.jsx";
+import DayControls from "./components/DayControls.jsx";
 
 const TABS = [
   { id: "board", label: "🗺️ Quest Board" },
@@ -11,33 +13,36 @@ export default function App() {
   const [tab, setTab] = useState("board");
 
   return (
-    <div className="shell">
-      <header className="topbar">
-        <div>
-          <h1 className="logo">
-            Quest<span>Board</span>
-          </h1>
-          <p className="tagline">Promote indie games. Level up. Get paid.</p>
-        </div>
-        <nav className="nav">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              className={tab === t.id ? "active" : ""}
-              onClick={() => setTab(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </nav>
-      </header>
+    <AppProvider>
+      <div className="shell">
+        <header className="topbar">
+          <div>
+            <h1 className="logo">
+              Quest<span>Board</span>
+            </h1>
+            <p className="tagline">Promote indie games. Level up. Get paid.</p>
+          </div>
+          <nav className="nav">
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                className={tab === t.id ? "active" : ""}
+                onClick={() => setTab(t.id)}
+              >
+                {t.label}
+              </button>
+            ))}
+          </nav>
+          <DayControls />
+        </header>
 
-      <main>
-        <div className="placeholder">
-          <h2>{TABS.find((t) => t.id === tab).label}</h2>
-          <p>This section will be built in an upcoming commit.</p>
-        </div>
-      </main>
-    </div>
+        <main>
+          <div className="placeholder">
+            <h2>{TABS.find((t) => t.id === tab).label}</h2>
+            <p>This section will be built in an upcoming commit.</p>
+          </div>
+        </main>
+      </div>
+    </AppProvider>
   );
 }
