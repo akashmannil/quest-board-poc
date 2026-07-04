@@ -1,16 +1,24 @@
-// The game detail page. Commit 12 ships the core: back button, hero, the quest
-// action panel (accept / tracked link / bounties / budget), and the rating
-// summary. Commit 13 adds the stats chart, top promoters, dev card, reviews
-// and related games below.
+// The game detail page. A storefront page for a single game: hero, the quest
+// action panel, a wishlists-over-time chart, who's promoting it, the developer
+// behind it, player reviews (readable + writable), and related games.
 
+import { useState } from "react";
 import { useApp } from "../state/AppState.jsx";
 import { useNav } from "../state/Nav.jsx";
 import { payoutMultiplier } from "../engine/exposure.js";
-import { ratingSummary, isNew } from "../engine/discovery.js";
+import {
+  ratingSummary,
+  isNew,
+  relatedGames,
+  topPromotersFor,
+  heatScore,
+} from "../engine/discovery.js";
 import Cover from "../components/Cover.jsx";
 import StarRating from "../components/StarRating.jsx";
 import PixelIcon from "../components/PixelIcon.jsx";
-import { useState } from "react";
+import GameCard, { heatFooter } from "../components/GameCard.jsx";
+import BarChart from "../components/charts/BarChart.jsx";
+import { fmtMoney } from "../components/charts/utils.js";
 
 function QuestPanel({ game }) {
   const { state, dispatch } = useApp();
@@ -48,8 +56,7 @@ function QuestPanel({ game }) {
       {myClaim ? (
         <div className="quest-accepted">
           <p>
-            <PixelIcon name="check" size={14} /> Quest accepted on day{" "}
-            {myClaim.dayClaimed} — share your link:
+            <PixelIcon name="check" size={14} /> Accepted on day {myClaim.dayClaimed} — your link:
           </p>
           <button
             className="quest-link"
@@ -81,6 +88,161 @@ function QuestPanel({ game }) {
   );
 }
 
+function DevCard({ game }) {
+  const { dev } = game;
+  return (
+    <div className="card dev-card">
+      <h3>
+        <PixelIcon name="gamepad" size={14} /> The developer
+      </h3>
+      <p className="dev-studio">{game.studio}</p>
+      <div className="dev-facts">
+        <span>📍 {dev.location}</span>
+        <span>
+          <PixelIcon name="heart" size={12} color="var(--neon-pink)" />{" "}
+          {dev.teamSize} {dev.teamSize === 1 ? "person" : "people"}
+        </span>
+        <span>🗓 since {dev.founded}</span>
+      </div>
+      <p className="dev-bio">{dev.bio}</p>
+    </div>
+  );
+}
+
+function TopPromoters({ game }) {
+  const { state } = useApp();
+  const rows = topPromotersFor(state, game.id, 5);
+  return (
+    <div className="card">
+      <h3>
+        <PixelIcon name="crown" size={14} /> Top promoters
+      </h3>
+      {rows.length === 0 ? (
+        <p className="empty-note">No promoters have driven outcomes yet.</p>
+      ) : (
+        <ul className="promoter-list">
+          {rows.map((r, i) => (
+            <li key={r.promoter.id} className={r.promoter.isPlayer ? "is-you" : ""}>
+              <span className="promoter-rank">{i + 1}</span>
+              <span className="promoter-av">{r.promoter.avatar}</span>
+              <span className="promoter-info">
+                <strong>{r.promoter.name}</strong>
+                <span className="cell-sub">{r.promoter.channel}</span>
+              </span>
+              <span className="promoter-wl">
+                <PixelIcon name="star" size={11} color="var(--neon-amber)" />{" "}
+                {r.wishlists.toLocaleString()}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function StatsCard({ game }) {
+  const data = game.dailyStats
+    .slice(-30)
+    .map((d) => ({ x: d.day, y: d.wishlists }));
+  const totalSpend = game.dailyStats.reduce((a, d) => a + d.spend, 0);
+
+  return (
+    <div className="card chart-card">
+      <h3>
+        <PixelIcon name="chart" size={14} /> Wishlists per day
+      </h3>
+      <p className="chart-sub">
+        {game.totals.wishlist.toLocaleString()} wishlists ·{" "}
+        {game.totals.demo.toLocaleString()} demos · {game.totals.key} keys ·{" "}
+        {fmtMoney(totalSpend)} paid out to promoters
+      </p>
+      {data.length > 0 ? (
+        <BarChart data={data} color="var(--chart-2)" formatY={(v) => String(Math.round(v))} />
+      ) : (
+        <p className="empty-note">No traffic yet — advance a few days.</p>
+      )}
+    </div>
+  );
+}
+
+function ReviewsSection({ game }) {
+  const { dispatch } = useApp();
+  const rating = ratingSummary(game);
+  const [stars, setStars] = useState(0);
+  const [text, setText] = useState("");
+  const alreadyReviewed = game.reviews.some((r) => r.author === "you");
+
+  const submit = () => {
+    if (!stars || !text.trim()) return;
+    dispatch({ type: "POST_REVIEW", gameId: game.id, review: { rating: stars, text } });
+    setStars(0);
+    setText("");
+  };
+
+  return (
+    <div className="card reviews-card">
+      <h3>
+        <PixelIcon name="star" size={14} /> Player reviews
+      </h3>
+      <div className="reviews-summary">
+        {rating.count > 0 ? (
+          <>
+            <span className="reviews-avg">{rating.avg.toFixed(1)}</span>
+            <StarRating value={rating.avg} size={15} />
+            <span className="cell-sub">
+              {rating.count} review{rating.count === 1 ? "" : "s"}
+            </span>
+          </>
+        ) : (
+          <span className="empty-note">No reviews yet — be the first.</span>
+        )}
+      </div>
+
+      {!alreadyReviewed && (
+        <div className="review-form">
+          <div className="review-form-head">
+            <span className="control-label">Your rating</span>
+            <StarRating value={stars} size={18} onRate={setStars} />
+          </div>
+          <textarea
+            className="review-input"
+            placeholder="Share what you thought of this game…"
+            value={text}
+            maxLength={280}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <div className="review-form-foot">
+            <span className="cell-sub">{text.length}/280</span>
+            <button
+              className="btn-primary"
+              disabled={!stars || !text.trim()}
+              onClick={submit}
+            >
+              Post review
+            </button>
+          </div>
+        </div>
+      )}
+
+      <ul className="review-list">
+        {game.reviews.map((r) => (
+          <li key={r.id} className={r.author === "you" ? "review is-you" : "review"}>
+            <div className="review-head">
+              <span className="review-author">
+                {r.author === "you" ? "🫵 You" : `@${r.author}`}
+              </span>
+              <StarRating value={r.rating} size={12} />
+              <span className="review-day">day {r.day}</span>
+            </div>
+            <p className="review-text">{r.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function GamePage() {
   const { state } = useApp();
   const { route, go } = useNav();
@@ -98,6 +260,7 @@ export default function GamePage() {
   }
 
   const rating = ratingSummary(game);
+  const related = relatedGames(state, game.id, 4);
 
   return (
     <section className="game-page">
@@ -129,11 +292,41 @@ export default function GamePage() {
             ) : (
               <span className="game-card-noreview">No reviews yet — be the first below.</span>
             )}
+            <span className="hero-heat">
+              <PixelIcon name="flame" size={12} color="var(--neon-red)" /> heat{" "}
+              {Math.round(heatScore(state, game))}
+            </span>
           </div>
         </div>
       </div>
 
-      <QuestPanel game={game} />
+      <div className="game-layout">
+        <div className="game-main">
+          <StatsCard game={game} />
+          <ReviewsSection game={game} />
+        </div>
+        <div className="game-side">
+          <QuestPanel game={game} />
+          <DevCard game={game} />
+          <TopPromoters game={game} />
+        </div>
+      </div>
+
+      {related.length > 0 && (
+        <section className="shelf related-shelf">
+          <div className="shelf-head">
+            <h3>
+              <PixelIcon name="gem" size={14} /> Related games
+            </h3>
+            <p className="shelf-sub">Shares genres with {game.title}.</p>
+          </div>
+          <div className="shelf-row">
+            {related.map((g) => (
+              <GameCard key={g.id} game={g} footer={heatFooter(heatScore(state, g))} />
+            ))}
+          </div>
+        </section>
+      )}
     </section>
   );
 }

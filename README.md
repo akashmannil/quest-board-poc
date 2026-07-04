@@ -24,18 +24,24 @@ npm install
 npm run dev
 ```
 
-Then play the loop: accept 2–3 quests on the **Quest Board** → hit **▶ Autoplay** →
-watch **My Dashboard** climb the S-curve, check what the dev's money bought in
+Then play the loop: browse the **Discover** homepage → open a game to read its
+reviews and meet the devs → accept a few quests → hit **▶ Autoplay** → watch
+**My Dashboard** climb the S-curve, check what the dev's money bought in
 **Dev HQ**, and see the bot account get caught in **Trust & Safety**.
 
-## The four screens
+## The screens
 
 | Tab | What it shows |
 | --- | --- |
-| 🗺️ Quest Board | Games as bounty-funded quests; accept one to get your tracked link |
+| 🔷 Discover | Steam-style homepage: featured hero, "picked for you", trending, genres gaining pace, new listings, browse by genre |
+| 🗺️ Quest Board | Games as bounty-funded quests, sortable & genre-filterable; accept one to get your tracked link |
 | 📈 My Dashboard | Exposure Score, tier, streak, the payout curve, daily earnings, leaderboard |
 | 🎮 Dev HQ | Budget spent, cost per wishlist, and per-promoter attribution (the receipt) |
 | 🛡️ Trust & Safety | The anti-fraud defenses and the live log of voided bot traffic |
+
+Every game also has its own **detail page** — wishlists-over-time chart, the
+quest action panel, a developer profile, top promoters, player reviews (write
+your own), and related games.
 
 ## Commit-by-commit documentation
 
@@ -54,6 +60,9 @@ write-up in [docs/commits/](docs/commits/) aimed at beginners and non-coders:
 | 8 | [Fixes found by actually playing the demo](docs/commits/8_commit.md) |
 | 9 | [The neon arcade redesign (design system)](docs/commits/9_commit.md) |
 | 10 | [Pixel icons in every screen + neon charts](docs/commits/10_commit.md) |
+| 11 | [18-game catalogue + the discovery engine](docs/commits/11_commit.md) |
+| 12 | [Steam-style Discover homepage + browsable Quest Board](docs/commits/12_commit.md) |
+| 13 | [The full game page: stats, devs, reviews & related](docs/commits/13_commit.md) |
 
 ## How the incentive math works (short version)
 

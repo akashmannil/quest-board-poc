@@ -1451,7 +1451,6 @@ button:active {
 }
 
 .quest-panel {
-  max-width: 520px;
   display: grid;
   gap: 14px;
 }
@@ -1464,4 +1463,222 @@ button:active {
   font: inherit;
   padding: 0;
   text-transform: none;
+}
+
+.game-hero-rating {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* two-column body: main (chart + reviews) and a sticky-ish sidebar */
+.game-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 28px;
+}
+
+.game-main,
+.game-side {
+  display: grid;
+  gap: 20px;
+}
+
+@media (max-width: 860px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* dev card */
+.dev-studio {
+  font-size: 18px;
+  color: var(--text);
+}
+
+.dev-facts {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+  font-size: 15px;
+  color: var(--text-dim);
+}
+
+.dev-facts span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dev-bio {
+  font-size: 16px;
+  color: var(--text-dim);
+}
+
+/* top promoters list */
+.promoter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.promoter-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+}
+
+.promoter-list li.is-you {
+  background: rgba(166, 107, 255, 0.12);
+  box-shadow: inset 2px 0 0 var(--neon-purple);
+}
+
+.promoter-rank {
+  font: 9px var(--font-pixel);
+  color: var(--text-faint);
+  width: 16px;
+}
+
+.promoter-av {
+  font-size: 18px;
+}
+
+.promoter-info {
+  display: grid;
+  flex: 1;
+}
+
+.promoter-info strong {
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.promoter-wl {
+  font-size: 15px;
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* reviews */
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.reviews-avg {
+  font-size: 30px;
+  color: var(--neon-amber);
+  text-shadow: 0 0 10px rgba(255, 201, 51, 0.4);
+}
+
+.review-form {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.review-form-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-input {
+  width: 100%;
+  min-height: 70px;
+  resize: vertical;
+  font: 17px var(--font-body);
+  color: var(--text);
+  background: #000;
+  border: 2px solid #000;
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-dark);
+  padding: 10px;
+}
+
+.review-input:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+}
+
+.review-form-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.review-form-foot .btn-primary {
+  padding: 9px 14px;
+}
+
+.review-form-foot .btn-primary:disabled {
+  background: var(--surface);
+  color: var(--text-faint);
+  cursor: not-allowed;
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark);
+}
+
+.review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.review {
+  border-top: 1px solid var(--chart-grid);
+  padding-top: 12px;
+}
+
+.review.is-you {
+  background: rgba(166, 107, 255, 0.08);
+  box-shadow: inset 2px 0 0 var(--neon-purple);
+  padding: 12px 10px;
+  border-top: none;
+}
+
+.review-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+}
+
+.review-author {
+  font-size: 16px;
+  color: var(--neon-cyan);
+}
+
+.review-day {
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+.review-text {
+  font-size: 17px;
+  color: var(--text-dim);
+}
+
+.related-shelf {
+  margin-top: 4px;
 }
