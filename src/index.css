@@ -52,6 +52,10 @@
   --font-pixel: "Press Start 2P", "Courier New", monospace;
   --font-body: "VT323", Consolas, monospace;
 
+  /* shared motion curves */
+  --ease: cubic-bezier(0.22, 0.7, 0.24, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
   font-family: var(--font-body);
   font-size: 19px;
   line-height: 1.55;
@@ -134,10 +138,17 @@ button {
   box-shadow:
     inset 2px 2px 0 var(--bevel-light),
     inset -2px -2px 0 var(--bevel-dark);
+  transition:
+    transform 0.12s var(--ease),
+    box-shadow 0.18s var(--ease),
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease),
+    background-color 0.18s var(--ease),
+    filter 0.18s var(--ease);
 }
 
 button:active {
-  transform: translateY(1px);
+  transform: translateY(2px);
   box-shadow:
     inset -2px -2px 0 var(--bevel-light),
     inset 2px 2px 0 var(--bevel-dark);
@@ -998,19 +1009,28 @@ button:active {
   gap: 0;
   width: 100%;
   text-align: left;
-  background: var(--surface);
-  border: 2px solid #000;
-  box-shadow:
-    inset 2px 2px 0 var(--bevel-light),
-    inset -2px -2px 0 var(--bevel-dark),
-    0 0 0 1px var(--neon-purple),
-    0 0 28px rgba(166, 107, 255, 0.28);
+  border: 2px solid transparent;
+  /* Gradient border via padding-box/border-box, animated by sliding the
+     border layer's gradient position. Surface fill stays flat on top. */
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(120deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple), var(--neon-pink))
+      border-box;
+  background-size: 100% 100%, 300% 100%;
+  animation: borderFlow 9s linear infinite;
+  box-shadow: 0 0 28px rgba(166, 107, 255, 0.24);
   margin-bottom: 28px;
   overflow: hidden;
+  transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.hero:hover {
+  box-shadow: 0 0 40px rgba(255, 46, 196, 0.35);
+  transform: translateY(-2px);
 }
 
 .hero:active {
-  transform: none;
+  transform: translateY(0);
 }
 
 .hero .cover {
@@ -1686,4 +1706,256 @@ button:active {
 
 .related-shelf {
   margin-top: 4px;
+}
+
+/* ====================================================================== */
+/* Motion & effects — the "responsive app" layer.                         */
+/* Everything the user touches gets a smooth transition; every screen and  */
+/* the elements on it animate in. All of it collapses under               */
+/* prefers-reduced-motion at the bottom of this block.                     */
+/* ====================================================================== */
+
+/* --- shared keyframes --- */
+
+@keyframes borderFlow {
+  0% { background-position: 0 0, 0% 50%; }
+  100% { background-position: 0 0, 300% 50%; }
+}
+
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* --- page transition --- */
+
+.view-anim {
+  animation: viewIn 0.34s var(--ease) both;
+}
+
+/* --- staggered entrance for the elements inside a freshly mounted view --- */
+
+.view-anim .stat-row > *,
+.view-anim .quest-grid > *,
+.view-anim .dash-grid > *,
+.view-anim .defense-grid > *,
+.view-anim .shelf-row > *,
+.view-anim .genre-grid > *,
+.view-anim .momentum-list > *,
+.view-anim .game-layout > * {
+  animation: riseIn 0.42s var(--ease) both;
+}
+
+/* cascade: each subsequent child starts a beat later (capped so big grids
+   don't crawl in) */
+.view-anim .stat-row > *:nth-child(1),
+.view-anim .quest-grid > *:nth-child(1),
+.view-anim .shelf-row > *:nth-child(1),
+.view-anim .dash-grid > *:nth-child(1) { animation-delay: 0.02s; }
+.view-anim .stat-row > *:nth-child(2),
+.view-anim .quest-grid > *:nth-child(2),
+.view-anim .shelf-row > *:nth-child(2),
+.view-anim .dash-grid > *:nth-child(2) { animation-delay: 0.07s; }
+.view-anim .stat-row > *:nth-child(3),
+.view-anim .quest-grid > *:nth-child(3),
+.view-anim .shelf-row > *:nth-child(3),
+.view-anim .dash-grid > *:nth-child(3) { animation-delay: 0.12s; }
+.view-anim .stat-row > *:nth-child(4),
+.view-anim .quest-grid > *:nth-child(4),
+.view-anim .shelf-row > *:nth-child(4),
+.view-anim .dash-grid > *:nth-child(4) { animation-delay: 0.17s; }
+.view-anim .stat-row > *:nth-child(n + 5),
+.view-anim .quest-grid > *:nth-child(n + 5),
+.view-anim .shelf-row > *:nth-child(n + 5),
+.view-anim .dash-grid > *:nth-child(n + 5) { animation-delay: 0.22s; }
+
+/* the shelves themselves cascade down the homepage */
+.view-anim .shelf,
+.view-anim .discover-split,
+.view-anim .hero,
+.view-anim .board-controls,
+.view-anim .game-hero,
+.view-anim .related-shelf {
+  animation: riseIn 0.4s var(--ease) both;
+}
+.view-anim .hero { animation-delay: 0.02s; }
+.view-anim .board-controls { animation-delay: 0.04s; }
+
+/* --- hover lifts (smooth, everywhere it means "clickable") --- */
+
+.game-card,
+.quest-card,
+.stat-tile,
+.momentum-row,
+.genre-chip,
+.card {
+  transition:
+    transform 0.2s var(--ease),
+    box-shadow 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+
+.game-card:hover,
+.quest-card:hover,
+.momentum-row:hover,
+.genre-chip:hover {
+  transform: translateY(-3px);
+}
+
+.stat-tile:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark),
+    0 0 0 1px var(--neon-purple),
+    0 0 16px rgba(166, 107, 255, 0.22);
+}
+
+.game-card:active,
+.quest-card:active,
+.momentum-row:active,
+.genre-chip:active {
+  transform: translateY(-1px);
+}
+
+/* nav tabs slide their glow in */
+.nav button {
+  position: relative;
+}
+
+.nav button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  bottom: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+  transition: left 0.22s var(--ease), right 0.22s var(--ease);
+}
+
+.nav button:hover::after,
+.nav button.active::after {
+  left: 8px;
+  right: 8px;
+}
+
+/* --- primary buttons: a light sheen sweeps across on hover --- */
+
+.btn-primary,
+.quest-accept {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before,
+.quest-accept::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-18deg);
+  transition: left 0.5s var(--ease);
+  pointer-events: none;
+}
+
+.btn-primary:hover::before,
+.quest-accept:hover:not(:disabled)::before {
+  left: 120%;
+}
+
+/* --- progress bars glide to their new value during autoplay --- */
+
+.quest-budget-bar div,
+.xp-bar div,
+.share-bar span {
+  transition: width 0.6s var(--ease);
+}
+
+/* --- copied-link + posted-review little confirmations --- */
+
+.quest-link {
+  transition: color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+.review.is-you {
+  animation: popIn 0.32s var(--ease-bounce) both;
+}
+
+/* --- day badge pulses when it changes value (via key remount in JS) --- */
+
+.day-badge {
+  transition: color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+@keyframes dayTick {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.12); box-shadow: 0 0 18px rgba(255, 201, 51, 0.6); }
+  100% { transform: scale(1); }
+}
+
+.day-badge.ticking {
+  animation: dayTick 0.4s var(--ease);
+}
+
+/* --- star rating hover feedback --- */
+
+.stars.interactive .star-slot {
+  transition: transform 0.12s var(--ease-bounce);
+}
+
+.stars.interactive .star-slot:hover {
+  transform: scale(1.25);
+}
+
+/* --- logo mark gently floats --- */
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.logo-mark {
+  animation: logoFloat 3.5s ease-in-out infinite;
+}
+
+/* ====================================================================== */
+/* Reduced motion: keep the app fully usable, drop the movement.          */
+/* ====================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .hero {
+    /* freeze the gradient border at a pleasant position */
+    animation: none;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(120deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple))
+        border-box;
+  }
 }

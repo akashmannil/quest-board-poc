@@ -63,6 +63,8 @@ write-up in [docs/commits/](docs/commits/) aimed at beginners and non-coders:
 | 11 | [18-game catalogue + the discovery engine](docs/commits/11_commit.md) |
 | 12 | [Steam-style Discover homepage + browsable Quest Board](docs/commits/12_commit.md) |
 | 13 | [The full game page: stats, devs, reviews & related](docs/commits/13_commit.md) |
+| 14 | [Line-height + scroll-to-top feel fixes](docs/commits/14_commit.md) |
+| 15 | [Motion & feel: smooth animations everywhere](docs/commits/15_commit.md) |
 
 ## How the incentive math works (short version)
 

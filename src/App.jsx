@@ -58,19 +58,25 @@ function Shell() {
       </header>
 
       <main>
-        {view === "discover" ? (
-          <Discover />
-        ) : view === "board" ? (
-          <QuestBoard />
-        ) : view === "promoter" ? (
-          <PromoterDashboard />
-        ) : view === "dev" ? (
-          <DevHQ />
-        ) : view === "trust" ? (
-          <TrustSafety />
-        ) : (
-          <GamePage />
-        )}
+        {/* Keyed so each navigation remounts and replays the entrance
+            animation. Keyed on gameId too, so hopping between game pages
+            animates. State changes (Advance day) keep the same key, so
+            autoplay never re-triggers the animation. */}
+        <div className="view-anim" key={`${view}:${route.gameId ?? ""}`}>
+          {view === "discover" ? (
+            <Discover />
+          ) : view === "board" ? (
+            <QuestBoard />
+          ) : view === "promoter" ? (
+            <PromoterDashboard />
+          ) : view === "dev" ? (
+            <DevHQ />
+          ) : view === "trust" ? (
+            <TrustSafety />
+          ) : (
+            <GamePage />
+          )}
+        </div>
       </main>
     </div>
   );

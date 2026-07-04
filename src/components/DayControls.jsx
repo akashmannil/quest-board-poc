@@ -16,7 +16,10 @@ export default function DayControls() {
 
   return (
     <div className="day-controls">
-      <span className="day-badge">Day {state.day}</span>
+      {/* keyed on the day so the element remounts and replays the tick pulse */}
+      <span className="day-badge ticking" key={state.day}>
+        Day {state.day}
+      </span>
       <button className="btn-primary" onClick={() => dispatch({ type: "ADVANCE_DAY" })}>
         ⏭ Advance day
       </button>
