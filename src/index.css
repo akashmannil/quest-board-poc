@@ -1,0 +1,142 @@
+/* ------------------------------------------------------------------ */
+/* QuestBoard design tokens — dark, neon-accented indie gaming theme  */
+/* ------------------------------------------------------------------ */
+
+:root {
+  /* surfaces */
+  --bg: #0d0f14;
+  --surface: #151823;
+  --surface-2: #1c2030;
+  --border: #2a3047;
+
+  /* text */
+  --text: #e8eaf2;
+  --text-dim: #9aa1b5;
+  --text-faint: #626a80;
+
+  /* brand + semantic */
+  --accent: #7c5cff;
+  --accent-soft: rgba(124, 92, 255, 0.14);
+  --green: #3ecf8e;
+  --green-soft: rgba(62, 207, 142, 0.12);
+  --amber: #f5b342;
+  --amber-soft: rgba(245, 179, 66, 0.12);
+  --red: #ff5d6c;
+  --red-soft: rgba(255, 93, 108, 0.12);
+  --cyan: #4cc9f0;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+/* ---------------- app shell ---------------- */
+
+.shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.tagline {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.nav {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.nav button {
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nav button:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.nav button.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* ---------------- shared primitives ---------------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.placeholder {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--text-faint);
+  display: grid;
+  gap: 8px;
+}
