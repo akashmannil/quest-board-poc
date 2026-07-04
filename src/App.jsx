@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AppProvider } from "./state/AppState.jsx";
 import DayControls from "./components/DayControls.jsx";
 import QuestBoard from "./views/QuestBoard.jsx";
+import PromoterDashboard from "./views/PromoterDashboard.jsx";
 
 const TABS = [
   { id: "board", label: "🗺️ Quest Board" },
@@ -40,6 +41,8 @@ export default function App() {
         <main>
           {tab === "board" ? (
             <QuestBoard />
+          ) : tab === "promoter" ? (
+            <PromoterDashboard />
           ) : (
             <div className="placeholder">
               <h2>{TABS.find((t) => t.id === tab).label}</h2>
