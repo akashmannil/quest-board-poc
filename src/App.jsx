@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AppProvider } from "./state/AppState.jsx";
 import DayControls from "./components/DayControls.jsx";
+import QuestBoard from "./views/QuestBoard.jsx";
 
 const TABS = [
   { id: "board", label: "🗺️ Quest Board" },
@@ -37,10 +38,14 @@ export default function App() {
         </header>
 
         <main>
-          <div className="placeholder">
-            <h2>{TABS.find((t) => t.id === tab).label}</h2>
-            <p>This section will be built in an upcoming commit.</p>
-          </div>
+          {tab === "board" ? (
+            <QuestBoard />
+          ) : (
+            <div className="placeholder">
+              <h2>{TABS.find((t) => t.id === tab).label}</h2>
+              <p>This section will be built in an upcoming commit.</p>
+            </div>
+          )}
         </main>
       </div>
     </AppProvider>
