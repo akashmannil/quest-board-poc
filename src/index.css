@@ -519,6 +519,54 @@ button {
   color: var(--text-dim);
 }
 
+/* ---------------- dev hq ---------------- */
+
+.game-picker {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.game-picker button {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.game-picker button.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.share-cell {
+  min-width: 140px;
+}
+
+.share-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.share-bar {
+  display: block;
+  height: 5px;
+  margin-top: 5px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.share-bar span {
+  display: block;
+  height: 100%;
+  background: var(--chart-2);
+  border-radius: 999px;
+}
+
 /* ---------------- tables ---------------- */
 
 .table-scroll {

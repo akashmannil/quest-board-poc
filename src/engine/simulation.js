@@ -188,7 +188,20 @@ export function simulateDay(prev) {
       conversion < FRAUD_MIN_CONVERSION;
 
     if (flagged) {
-      for (const e of dayEntries) e.voided = true; // money never moves
+      // Money never moves: void the payouts, refund the dev's budget and
+      // strip the fake outcomes back out of the public counts.
+      for (const e of dayEntries) {
+        e.voided = true;
+        const game = games[e.gameId];
+        game.budgetSpent -= e.devCost;
+        game.totals[e.type] -= e.count;
+        const claim = claims.find((c) => c.id === e.claimId);
+        claim.totals[e.type] -= e.count;
+        if (gameDayAgg[e.gameId]) {
+          gameDayAgg[e.gameId].spend -= e.devCost;
+          if (e.type === "wishlist") gameDayAgg[e.gameId].wishlists -= e.count;
+        }
+      }
       fraudFlags.push({
         day,
         promoterId: p.id,
