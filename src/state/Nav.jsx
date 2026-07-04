@@ -13,16 +13,22 @@ import { createContext, useContext, useState, useCallback } from "react";
 const NavContext = createContext(null);
 
 export function NavProvider({ children }) {
-  const [route, setRoute] = useState({ view: "discover", gameId: null });
+  // `genre` is an optional pre-selected filter carried onto the Quest Board
+  // when arriving from a "browse by genre" click on the homepage.
+  const [route, setRoute] = useState({ view: "discover", gameId: null, genre: null });
 
-  const go = useCallback((view) => setRoute({ view, gameId: null }), []);
+  const go = useCallback((view) => setRoute({ view, gameId: null, genre: null }), []);
   const openGame = useCallback(
-    (gameId) => setRoute({ view: "game", gameId }),
+    (gameId) => setRoute({ view: "game", gameId, genre: null }),
+    []
+  );
+  const browseGenre = useCallback(
+    (genre) => setRoute({ view: "board", gameId: null, genre }),
     []
   );
 
   return (
-    <NavContext.Provider value={{ route, go, openGame }}>
+    <NavContext.Provider value={{ route, go, openGame, browseGenre }}>
       {children}
     </NavContext.Provider>
   );

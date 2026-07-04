@@ -2,9 +2,11 @@
 // Accepting one generates the unique tracked link that attributes every
 // click / wishlist / key back to this promoter.
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useApp } from "../state/AppState.jsx";
+import { useNav } from "../state/Nav.jsx";
 import { payoutMultiplier } from "../engine/exposure.js";
+import { listedGames, heatScore, allGenres } from "../engine/discovery.js";
 import PixelIcon from "../components/PixelIcon.jsx";
 
 function CopyLink({ link }) {
@@ -26,6 +28,7 @@ function CopyLink({ link }) {
 
 function QuestCard({ game }) {
   const { state, dispatch } = useApp();
+  const { openGame } = useNav();
   const you = state.promoters.you;
 
   const budgetLeft = Math.max(0, game.budgetTotal - game.budgetSpent);
@@ -46,7 +49,14 @@ function QuestCard({ game }) {
       </div>
 
       <div className="quest-body">
-        <header>
+        <header
+          className="quest-header-link"
+          role="button"
+          tabIndex={0}
+          onClick={() => openGame(game.id)}
+          onKeyDown={(e) => e.key === "Enter" && openGame(game.id)}
+          title="View game details"
+        >
           <h3>{game.title}</h3>
           <p className="quest-studio">{game.studio}</p>
         </header>
@@ -116,13 +126,41 @@ function QuestCard({ game }) {
             )}
           </button>
         )}
+
+        <button className="quest-details-link" onClick={() => openGame(game.id)}>
+          View details, reviews & devs →
+        </button>
       </div>
     </article>
   );
 }
 
+const SORTS = {
+  trending: { label: "Trending", fn: (state) => (a, b) => heatScore(state, b) - heatScore(state, a) },
+  newest: { label: "Newest", fn: () => (a, b) => b.listedDay - a.listedDay },
+  payout: { label: "Highest payout", fn: () => (a, b) => b.bounties.wishlist - a.bounties.wishlist },
+  budget: {
+    label: "Most budget left",
+    fn: () => (a, b) =>
+      b.budgetTotal - b.budgetSpent - (a.budgetTotal - a.budgetSpent),
+  },
+};
+
 export default function QuestBoard() {
   const { state } = useApp();
+  const { route } = useNav();
+  const [sort, setSort] = useState("trending");
+  const [genre, setGenre] = useState(route.genre ?? "All");
+
+  const genres = ["All", ...allGenres(state)];
+
+  const games = useMemo(() => {
+    const base = listedGames(state).filter(
+      (g) => genre === "All" || g.tags.includes(genre)
+    );
+    return base.sort(SORTS[sort].fn(state));
+  }, [state, sort, genre]);
+
   return (
     <section>
       <div className="view-intro">
@@ -135,11 +173,44 @@ export default function QuestBoard() {
           every <strong>verified</strong> wishlist, demo and key it produces.
         </p>
       </div>
-      <div className="quest-grid">
-        {Object.values(state.games).map((g) => (
-          <QuestCard key={g.id} game={g} />
-        ))}
+
+      <div className="board-controls">
+        <div className="control-group">
+          <span className="control-label">Sort</span>
+          {Object.entries(SORTS).map(([key, s]) => (
+            <button
+              key={key}
+              className={sort === key ? "chip-btn active" : "chip-btn"}
+              onClick={() => setSort(key)}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+        <div className="control-group genre-select">
+          <span className="control-label">Genre</span>
+          <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+            {genres.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
+          </select>
+          <span className="board-count">
+            {games.length} game{games.length === 1 ? "" : "s"}
+          </span>
+        </div>
       </div>
+
+      {games.length === 0 ? (
+        <p className="empty-note">No quests match this filter yet.</p>
+      ) : (
+        <div className="quest-grid">
+          {games.map((g) => (
+            <QuestCard key={g.id} game={g} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
