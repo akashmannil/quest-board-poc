@@ -8,7 +8,7 @@
 // same demo plays out the same way on every reset — a repeatable movie.
 // ---------------------------------------------------------------------------
 
-import { GAMES, PROMOTERS } from "../data/seed.js";
+import { GAMES, PROMOTERS, RIVAL_CLAIMS } from "../data/seed.js";
 import {
   payoutMultiplier,
   scoreGainForOutcomes,
@@ -71,6 +71,23 @@ export function claimQuest(state, promoterId, gameId) {
   };
 }
 
+// A player-written review, prepended so it shows at the top of the game page.
+export function postReview(state, gameId, { rating, text }) {
+  const clean = text.trim();
+  if (!clean) return state;
+  const id = state.nextIds.review;
+  const game = state.games[gameId];
+  const review = { id: `r${id}`, author: "you", rating, day: state.day, text: clean };
+  return {
+    ...state,
+    games: {
+      ...state.games,
+      [gameId]: { ...game, reviews: [review, ...game.reviews] },
+    },
+    nextIds: { ...state.nextIds, review: id + 1 },
+  };
+}
+
 // Advance the world by one day. Pure function: same input state -> same
 // output state (the RNG is seeded from the day number).
 export function simulateDay(prev) {
@@ -113,6 +130,7 @@ export function simulateDay(prev) {
 
       for (const claim of myClaims) {
         const game = games[claim.gameId];
+        if (game.listedDay > day) continue; // quest not live on QuestBoard yet
         const budgetLeft = game.budgetTotal - game.budgetSpent;
         if (budgetLeft <= 0.5) continue; // quest budget exhausted
 
@@ -266,6 +284,9 @@ export function buildInitialState() {
         keysUsed: 0,
         totals: { click: 0, wishlist: 0, demo: 0, key: 0 },
         dailyStats: [],
+        // Player-written reviews live in state so the demo can add to them;
+        // the seed reviews are the starting comments.
+        reviews: g.reviews.map((r, i) => ({ id: `${g.id}-seed-${i}`, ...r })),
       },
     ])
   );
@@ -278,18 +299,11 @@ export function buildInitialState() {
     claims: [],
     ledger: [],
     fraudFlags: [],
-    nextIds: { claim: 1, ledger: 1 },
+    nextIds: { claim: 1, ledger: 1, review: 1 },
   };
 
   // The rivals were already on the platform before you showed up.
-  const rivalClaims = [
-    ["priya", ["moonpetal", "deepseadiner", "bulletballet"]],
-    ["carlos", ["moonpetal", "lighthouse"]],
-    ["nina", ["gridrunner", "bulletballet"]],
-    ["ben", ["lighthouse"]],
-    ["sus99", ["gridrunner", "compostknights"]],
-  ];
-  for (const [promoterId, gameIds] of rivalClaims)
+  for (const [promoterId, gameIds] of RIVAL_CLAIMS)
     for (const gameId of gameIds) state = claimQuest(state, promoterId, gameId);
 
   // Fast-forward two weeks so the demo opens on a living platform.
