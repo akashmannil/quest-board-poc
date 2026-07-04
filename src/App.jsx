@@ -4,6 +4,7 @@ import DayControls from "./components/DayControls.jsx";
 import QuestBoard from "./views/QuestBoard.jsx";
 import PromoterDashboard from "./views/PromoterDashboard.jsx";
 import DevHQ from "./views/DevHQ.jsx";
+import TrustSafety from "./views/TrustSafety.jsx";
 
 const TABS = [
   { id: "board", label: "🗺️ Quest Board" },
@@ -47,10 +48,7 @@ export default function App() {
           ) : tab === "dev" ? (
             <DevHQ />
           ) : (
-            <div className="placeholder">
-              <h2>{TABS.find((t) => t.id === tab).label}</h2>
-              <p>This section will be built in an upcoming commit.</p>
-            </div>
+            <TrustSafety />
           )}
         </main>
       </div>

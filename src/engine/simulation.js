@@ -245,13 +245,6 @@ export function simulateDay(prev) {
   };
 }
 
-// A ledger entry's money status is derived, never stored:
-// voided (fraud) -> pending (inside the 7-day window) -> settled.
-export function entryStatus(entry, currentDay) {
-  if (entry.voided) return "voided";
-  return entry.settlesOnDay <= currentDay ? "settled" : "pending";
-}
-
 export function buildInitialState() {
   const promoters = Object.fromEntries(
     PROMOTERS.map((p) => [
