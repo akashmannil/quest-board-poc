@@ -51,6 +51,7 @@ write-up in [docs/commits/](docs/commits/) aimed at beginners and non-coders:
 | 5 | [The Promoter Dashboard](docs/commits/5_commit.md) |
 | 6 | [Dev HQ & the fraud-refund fix](docs/commits/6_commit.md) |
 | 7 | [Trust & Safety panel](docs/commits/7_commit.md) |
+| 8 | [Fixes found by actually playing the demo](docs/commits/8_commit.md) |
 
 ## How the incentive math works (short version)
 

@@ -47,7 +47,7 @@ const PATTERNS = {
 // combined with almost nobody converting, smells like purchased bot traffic.
 const FRAUD_SPIKE_RATIO = 5;
 const FRAUD_MIN_CONVERSION = 0.03;
-const FRAUD_SCORE_PENALTY = 0.95; // flagged day: score docked 5%
+const FRAUD_SCORE_PENALTY = 0.9; // flagged day: score docked 10%
 
 export function claimQuest(state, promoterId, gameId) {
   const already = state.claims.some(
@@ -109,7 +109,7 @@ export function simulateDay(prev) {
 
     if (active) {
       const isBot = p.pattern === "bot";
-      const botSpike = isBot && day % 5 === 0;
+      const botSpike = isBot && day % 4 === 0;
 
       for (const claim of myClaims) {
         const game = games[claim.gameId];

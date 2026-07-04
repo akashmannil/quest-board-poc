@@ -27,14 +27,13 @@ export default function LineChart({
   const plotH = H - PAD.t - PAD.b;
   const xMin = data[0].x;
   const xMax = data[data.length - 1].x;
-  const yTop = Math.max(
-    ...data.map((d) => d.y),
-    ...refLines.map((r) => r.y),
-    ...dots.map((d) => d.y),
-    1
-  );
+  // Scale to the data, not the reference lines: a newcomer's score chart
+  // should not be flattened by the "Legend: 900" threshold. Guides that are
+  // out of range simply don't render yet — they appear as you approach them.
+  const yTop = Math.max(...data.map((d) => d.y), ...dots.map((d) => d.y), 1);
   const ticks = niceTicks(yTop);
   const yMax = ticks[ticks.length - 1];
+  const visibleRefLines = refLines.filter((r) => r.y <= yMax);
 
   const xs = (x) => PAD.l + ((x - xMin) / (xMax - xMin || 1)) * plotW;
   const ys = (y) => PAD.t + (1 - y / yMax) * plotH;
@@ -96,7 +95,7 @@ export default function LineChart({
           </text>
         ))}
         {/* reference lines */}
-        {refLines.map((r) => (
+        {visibleRefLines.map((r) => (
           <g key={r.label}>
             <line
               x1={PAD.l} x2={W - PAD.r} y1={ys(r.y)} y2={ys(r.y)}

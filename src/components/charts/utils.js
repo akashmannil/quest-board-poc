@@ -7,8 +7,9 @@ export function niceTicks(maxVal, count = 4) {
   const mag = Math.pow(10, Math.floor(Math.log10(rough)));
   const norm = rough / mag;
   const step = (norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 5 ? 5 : 10) * mag;
+  const top = Math.ceil(maxVal / step - 0.001) * step; // always cover maxVal
   const ticks = [];
-  for (let v = 0; v <= maxVal + step * 0.001; v += step) ticks.push(+v.toFixed(6));
+  for (let v = 0; v <= top + step * 0.001; v += step) ticks.push(+v.toFixed(6));
   return ticks;
 }
 
