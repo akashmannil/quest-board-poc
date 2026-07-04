@@ -52,6 +52,8 @@ write-up in [docs/commits/](docs/commits/) aimed at beginners and non-coders:
 | 6 | [Dev HQ & the fraud-refund fix](docs/commits/6_commit.md) |
 | 7 | [Trust & Safety panel](docs/commits/7_commit.md) |
 | 8 | [Fixes found by actually playing the demo](docs/commits/8_commit.md) |
+| 9 | [The neon arcade redesign (design system)](docs/commits/9_commit.md) |
+| 10 | [Pixel icons in every screen + neon charts](docs/commits/10_commit.md) |
 
 ## How the incentive math works (short version)
 
@@ -72,8 +74,13 @@ write-up in [docs/commits/](docs/commits/) aimed at beginners and non-coders:
 - **Fraud detection is illustrative** — one heuristic (velocity spike + dead
   conversion), not a production system; the Trust & Safety tab lists what's missing.
 
-## Tech
+## Tech & look
 
 Vite + React 19, zero runtime dependencies beyond React. Charts are hand-rolled SVG
 (~150 lines each) with CVD-validated colors. State is one reducer over a seeded,
 deterministic simulation — every reset replays the same world.
+
+The visual identity is **neon arcade × Minecraft**: Press Start 2P + VT323 pixel
+fonts, a code-drawn pixel shield-and-sword logo, beveled push-in buttons, segmented
+XP bars, CRT scanlines, and a hand-drawn 8×8 pixel icon set (`src/components/PixelIcon.jsx`)
+— no icon libraries, no image assets.

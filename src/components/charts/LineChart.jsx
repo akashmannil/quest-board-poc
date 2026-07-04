@@ -109,7 +109,8 @@ export default function LineChart({
 
         <path d={areaPath} fill={color} opacity="0.1" />
         <path d={linePath} fill="none" stroke={color} strokeWidth="2"
-          strokeLinejoin="round" strokeLinecap="round" />
+          strokeLinejoin="round" strokeLinecap="round"
+          style={{ filter: `drop-shadow(0 0 3px ${color})` }} />
 
         {/* annotation dots (with a surface ring so they read over the line) */}
         {dots.map((d) => (

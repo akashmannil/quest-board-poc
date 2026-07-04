@@ -20,22 +20,27 @@ import { EVENT_TYPES } from "../engine/exposure.js";
 import LineChart from "../components/charts/LineChart.jsx";
 import BarChart from "../components/charts/BarChart.jsx";
 import { fmtMoney } from "../components/charts/utils.js";
+import PixelIcon, { OUTCOME_ICONS, TIER_ICONS } from "../components/PixelIcon.jsx";
 
 function TierChip({ score }) {
   const tier = tierFor(score);
   return (
     <span className="tier-chip" style={{ color: tier.color }}>
-      {tier.icon} {tier.name}
+      <PixelIcon name={TIER_ICONS[tier.name]} size={12} /> {tier.name}
     </span>
   );
 }
 
-function StatTile({ label, value, sub }) {
+function StatTile({ icon, label, value, sub, children }) {
   return (
     <div className="stat-tile">
-      <p className="stat-label">{label}</p>
+      <p className="stat-label">
+        {icon && <PixelIcon name={icon} size={12} />}
+        {label}
+      </p>
       <p className="stat-value">{value}</p>
       {sub && <p className="stat-sub">{sub}</p>}
+      {children}
     </div>
   );
 }
@@ -83,7 +88,9 @@ export default function PromoterDashboard() {
   return (
     <section>
       <div className="view-intro">
-        <h2>📈 My Dashboard</h2>
+        <h2>
+          <PixelIcon name="chart" size={18} /> My Dashboard
+        </h2>
         <p>
           Your Exposure Score turns verified outcomes into a payout multiplier.
           Show up daily and the compounding is steep — until the curve levels
@@ -93,14 +100,15 @@ export default function PromoterDashboard() {
 
       {myClaims.length === 0 && (
         <div className="nudge">
-          🗺️ You haven't accepted any quests yet — pick one on the{" "}
-          <strong>Quest Board</strong>, then advance a few days and watch this
-          page come alive.
+          <PixelIcon name="map" size={14} /> You haven't accepted any quests yet
+          — pick one on the <strong>Quest Board</strong>, then advance a few
+          days and watch this page come alive.
         </div>
       )}
 
       <div className="stat-row">
         <StatTile
+          icon="star"
           label="Exposure Score"
           value={
             <>
@@ -109,26 +117,45 @@ export default function PromoterDashboard() {
           }
           sub={
             next
-              ? `${Math.max(0, Math.ceil(next.min - you.score))} to ${next.icon} ${next.name}`
+              ? `${Math.max(0, Math.ceil(next.min - you.score))} XP to ${next.name}`
               : "Top tier reached"
           }
-        />
+        >
+          {next && (
+            <div className="xp-bar" title={`Progress to ${next.name}`}>
+              <div
+                style={{
+                  width: `${Math.min(
+                    100,
+                    ((you.score - tierFor(you.score).min) /
+                      (next.min - tierFor(you.score).min)) *
+                      100
+                  )}%`,
+                }}
+              />
+            </div>
+          )}
+        </StatTile>
         <StatTile
+          icon="coin"
           label="Payout multiplier"
           value={`${mult.toFixed(2)}×`}
           sub={`a $0.45 bounty pays you ${fmtMoney(0.45 * mult)}`}
         />
         <StatTile
+          icon="flame"
           label="Streak"
-          value={`${you.streak}🔥`}
+          value={you.streak}
           sub="consecutive active days"
         />
         <StatTile
+          icon="hourglass"
           label="Pending"
           value={fmtMoney(money.pending)}
           sub="settles 7 days after the outcome"
         />
         <StatTile
+          icon="check"
           label="Settled"
           value={fmtMoney(money.settled)}
           sub={`${fmtMoney(weekly)} earned in the last 7 days`}
@@ -143,10 +170,10 @@ export default function PromoterDashboard() {
             data={you.scoreHistory.map((h) => ({ x: h.day, y: h.score }))}
             color="var(--chart-1)"
             refLines={[
-              { y: 100, label: "🚀 Rising" },
-              { y: 300, label: "⚡ Established" },
-              { y: 600, label: "💠 Partner" },
-              { y: 900, label: "👑 Legend" },
+              { y: 100, label: "Rising" },
+              { y: 300, label: "Established" },
+              { y: 600, label: "Partner" },
+              { y: 900, label: "Legend" },
             ]}
             endLabel={`${Math.round(you.score)}`}
           />
@@ -208,10 +235,10 @@ export default function PromoterDashboard() {
               <thead>
                 <tr>
                   <th>Game</th>
-                  <th className="num">👆</th>
-                  <th className="num">⭐</th>
-                  <th className="num">⬇️</th>
-                  <th className="num">🔑</th>
+                  <th className="num" title="Link clicks"><PixelIcon name="cursor" size={12} /></th>
+                  <th className="num" title="Steam wishlists"><PixelIcon name="star" size={12} /></th>
+                  <th className="num" title="Demo downloads"><PixelIcon name="download" size={12} /></th>
+                  <th className="num" title="Keys redeemed"><PixelIcon name="key" size={12} /></th>
                   <th className="num">Earned</th>
                 </tr>
               </thead>
@@ -254,15 +281,20 @@ export default function PromoterDashboard() {
                   <tr key={e.id}>
                     <td>{e.day}</td>
                     <td>
-                      {EVENT_TYPES[e.type].icon} {e.count}× {EVENT_TYPES[e.type].label}
+                      <PixelIcon name={OUTCOME_ICONS[e.type]} size={13} />{" "}
+                      {e.count}× {EVENT_TYPES[e.type].label}
                     </td>
                     <td>{state.games[e.gameId].title}</td>
                     <td className="num">{fmtMoney(e.gross)}</td>
                     <td>
                       {e.settlesOnDay <= state.day ? (
-                        <span className="status settled">✓ settled</span>
+                        <span className="status settled">
+                          <PixelIcon name="check" size={12} /> settled
+                        </span>
                       ) : (
-                        <span className="status pending">⧗ pending</span>
+                        <span className="status pending">
+                          <PixelIcon name="hourglass" size={12} /> pending
+                        </span>
                       )}
                     </td>
                   </tr>

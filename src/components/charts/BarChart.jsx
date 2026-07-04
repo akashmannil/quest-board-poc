@@ -55,6 +55,11 @@ export default function BarChart({
                   d={barPath(cx - barW / 2, ys(d.y), barW, ys(0) - ys(d.y))}
                   fill={color}
                   opacity={hoverI === null || hoverI === i ? 1 : 0.45}
+                  style={
+                    hoverI === i
+                      ? { filter: `drop-shadow(0 0 4px ${color})` }
+                      : undefined
+                  }
                 />
               )}
               {/* invisible full-height hit target, wider than the mark */}

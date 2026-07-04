@@ -5,40 +5,41 @@
 
 import { useApp } from "../state/AppState.jsx";
 import { fmtMoney } from "../components/charts/utils.js";
+import PixelIcon from "../components/PixelIcon.jsx";
 
 const DEFENSES = [
   {
-    icon: "✅",
+    icon: "check",
     title: "Pay for outcomes, never activity",
     live: true,
     text: "Nobody earns for posting or clicking around. Only verified outcomes (wishlists, demos, key redemptions) pay — which makes most spam economically pointless before any detection runs.",
   },
   {
-    icon: "⏳",
+    icon: "hourglass",
     title: "7-day settlement window",
     live: true,
     text: "Earnings sit as 'pending' for a week before money moves. Fraud found inside the window is voided at zero cost — the money never left.",
   },
   {
-    icon: "📈",
+    icon: "chart",
     title: "Velocity + conversion anomaly detection",
     live: true,
     text: "Every promoter is compared against their own trailing 7-day average. A day with a 5×+ click spike that converts below 3% is voided automatically: real virality converts, purchased clicks don't.",
   },
   {
-    icon: "🧮",
+    icon: "bolt",
     title: "Reputation that fraud can't buy",
     live: true,
-    text: "A flagged day docks the Exposure Score 5% and resets the streak, and the daily score-gain cap means no burst of traffic — real or fake — can rocket an account up the payout curve overnight.",
+    text: "A flagged day docks the Exposure Score 10% and resets the streak, and the daily score-gain cap means no burst of traffic — real or fake — can rocket an account up the payout curve overnight.",
   },
   {
-    icon: "💸",
+    icon: "coin",
     title: "Devs never pay for voided traffic",
     live: true,
     text: "Voided outcomes refund the developer's budget and are stripped from public counts. The attribution table in Dev HQ shows the refund line, so the defense is visible to the paying side.",
   },
   {
-    icon: "🏗️",
+    icon: "pickaxe",
     title: "What production would add",
     live: false,
     text: "Steam UTM cross-checks on every wishlist, device/IP fingerprinting, identity verification before first payout, random manual review of top earners, and clawbacks after settlement for slow-burn fraud.",
@@ -62,7 +63,9 @@ export default function TrustSafety() {
   return (
     <section>
       <div className="view-intro">
-        <h2>🛡️ Trust & Safety</h2>
+        <h2>
+          <PixelIcon name="shield" size={18} /> Trust & Safety
+        </h2>
         <p>
           A platform that pays cash for clicks gets attacked in week one. This
           panel shows the defenses the simulation actually runs — and what they
@@ -99,7 +102,7 @@ export default function TrustSafety() {
         {DEFENSES.map((d) => (
           <div key={d.title} className="card defense-card">
             <h3>
-              {d.icon} {d.title}
+              <PixelIcon name={d.icon} size={14} /> {d.title}
             </h3>
             <span className={d.live ? "defense-badge live" : "defense-badge"}>
               {d.live ? "simulated in this PoC" : "design note"}
@@ -135,7 +138,7 @@ export default function TrustSafety() {
                   <tr key={i}>
                     <td>{f.day}</td>
                     <td>
-                      {state.promoters[f.promoterId].avatar}{" "}
+                      <PixelIcon name="skull" size={13} color="var(--neon-red)" />{" "}
                       {state.promoters[f.promoterId].name}
                     </td>
                     <td className="flag-detail">{f.detail}</td>

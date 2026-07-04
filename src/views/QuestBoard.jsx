@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { useApp } from "../state/AppState.jsx";
 import { payoutMultiplier } from "../engine/exposure.js";
+import PixelIcon from "../components/PixelIcon.jsx";
 
 function CopyLink({ link }) {
   const [copied, setCopied] = useState(false);
@@ -59,9 +60,15 @@ function QuestCard({ game }) {
         <p className="quest-pitch">{game.pitch}</p>
 
         <div className="quest-bounties">
-          <span title="Per verified Steam wishlist">⭐ ${game.bounties.wishlist.toFixed(2)}/wishlist</span>
-          <span title="Per demo download">⬇️ ${game.bounties.demo.toFixed(2)}/demo</span>
-          <span title="Per game key redeemed">🔑 ${game.bounties.key.toFixed(2)}/key</span>
+          <span title="Per verified Steam wishlist">
+            <PixelIcon name="star" size={14} /> ${game.bounties.wishlist.toFixed(2)}/wishlist
+          </span>
+          <span title="Per demo download">
+            <PixelIcon name="download" size={14} /> ${game.bounties.demo.toFixed(2)}/demo
+          </span>
+          <span title="Per game key redeemed">
+            <PixelIcon name="key" size={14} /> ${game.bounties.key.toFixed(2)}/key
+          </span>
         </div>
 
         <div className="quest-budget">
@@ -87,7 +94,10 @@ function QuestCard({ game }) {
 
         {myClaim ? (
           <div className="quest-accepted">
-            <p>✅ Quest accepted on day {myClaim.dayClaimed} — share your link:</p>
+            <p>
+              <PixelIcon name="check" size={14} /> Quest accepted on day{" "}
+              {myClaim.dayClaimed} — share your link:
+            </p>
             <CopyLink link={myClaim.link} />
           </div>
         ) : (
@@ -96,9 +106,14 @@ function QuestCard({ game }) {
             disabled={closed}
             onClick={() => dispatch({ type: "CLAIM_QUEST", gameId: game.id })}
           >
-            {closed
-              ? "Quest closed"
-              : `Accept quest — earn ~$${yourRate.toFixed(2)}/wishlist at your score`}
+            {closed ? (
+              "Quest closed"
+            ) : (
+              <>
+                <PixelIcon name="sword" size={13} /> Accept quest — earn ~$
+                {yourRate.toFixed(2)}/wishlist at your score
+              </>
+            )}
           </button>
         )}
       </div>
@@ -111,7 +126,9 @@ export default function QuestBoard() {
   return (
     <section>
       <div className="view-intro">
-        <h2>🗺️ Quest Board</h2>
+        <h2>
+          <PixelIcon name="map" size={18} /> Quest Board
+        </h2>
         <p>
           Indie devs fund quests with outcome bounties instead of upfront ad
           spend. Accept a quest, share your tracked link anywhere, and earn for

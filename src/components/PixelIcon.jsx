@@ -183,6 +183,26 @@ const ICONS = {
     ".X.XX.X.",
     "........",
   ],
+  cursor: [
+    "X.......",
+    "XX......",
+    "XXX.....",
+    "XXXX....",
+    "XXXXX...",
+    "XXX.....",
+    "X.XX....",
+    "..XX....",
+  ],
+  download: [
+    "...XX...",
+    "...XX...",
+    "...XX...",
+    ".XXXXXX.",
+    "..XXXX..",
+    "...XX...",
+    "........",
+    "XXXXXXXX",
+  ],
   pickaxe: [
     "..XXXXX.",
     ".XX...XX",
@@ -193,6 +213,22 @@ const ICONS = {
     ".XX.....",
     "XX......",
   ],
+};
+
+// UI mappings: which pixel icon stands for each outcome type and tier.
+export const OUTCOME_ICONS = {
+  click: "cursor",
+  wishlist: "star",
+  demo: "download",
+  key: "key",
+};
+
+export const TIER_ICONS = {
+  Newcomer: "sprout",
+  Rising: "rocket",
+  Established: "bolt",
+  Partner: "gem",
+  Legend: "crown",
 };
 
 export default function PixelIcon({ name, size = 16, color = "currentColor", className }) {

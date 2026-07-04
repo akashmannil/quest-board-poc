@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useApp } from "../state/AppState.jsx";
 import BarChart from "../components/charts/BarChart.jsx";
 import { fmtMoney } from "../components/charts/utils.js";
+import PixelIcon from "../components/PixelIcon.jsx";
 
 // Everything the dev of `gameId` paid, grouped by promoter.
 function attribution(state, gameId) {
@@ -48,7 +49,9 @@ export default function DevHQ() {
   return (
     <section>
       <div className="view-intro">
-        <h2>🎮 Dev HQ</h2>
+        <h2>
+          <PixelIcon name="gamepad" size={18} /> Dev HQ
+        </h2>
         <p>
           The developer's view: no upfront ad spend, no agency retainer — the
           budget only moves when a <strong>verified outcome</strong> happens,
@@ -70,7 +73,7 @@ export default function DevHQ() {
 
       <div className="stat-row">
         <div className="stat-tile">
-          <p className="stat-label">Budget</p>
+          <p className="stat-label"><PixelIcon name="coin" size={12} /> Budget</p>
           <p className="stat-value">{fmtMoney(game.budgetSpent)}</p>
           <p className="stat-sub">
             spent of ${game.budgetTotal}
@@ -78,19 +81,19 @@ export default function DevHQ() {
           </p>
         </div>
         <div className="stat-tile">
-          <p className="stat-label">Wishlists bought</p>
+          <p className="stat-label"><PixelIcon name="star" size={12} /> Wishlists bought</p>
           <p className="stat-value">{game.totals.wishlist.toLocaleString()}</p>
           <p className="stat-sub">the metric Steam's algorithm rewards</p>
         </div>
         <div className="stat-tile">
-          <p className="stat-label">Cost per wishlist</p>
+          <p className="stat-label"><PixelIcon name="pickaxe" size={12} /> Cost per wishlist</p>
           <p className="stat-value">
             {costPerWishlist ? fmtMoney(costPerWishlist) : "—"}
           </p>
           <p className="stat-sub">all outcome types included</p>
         </div>
         <div className="stat-tile">
-          <p className="stat-label">Demos / keys</p>
+          <p className="stat-label"><PixelIcon name="key" size={12} /> Demos / keys</p>
           <p className="stat-value">
             {game.totals.demo.toLocaleString()} / {game.totals.key}
           </p>
@@ -148,7 +151,7 @@ export default function DevHQ() {
                       {fmtMoney(r.cost)}
                       {r.voidedCost > 0 && (
                         <span className="cell-sub status voided">
-                          +{fmtMoney(r.voidedCost)} voided as fraud, refunded
+                          <PixelIcon name="skull" size={12} /> +{fmtMoney(r.voidedCost)} voided as fraud, refunded
                         </span>
                       )}
                     </td>
