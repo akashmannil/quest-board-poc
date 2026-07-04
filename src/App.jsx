@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { AppProvider } from "./state/AppState.jsx";
 import { NavProvider, useNav } from "./state/Nav.jsx";
 import DayControls from "./components/DayControls.jsx";
@@ -21,6 +22,13 @@ const TABS = [
 function Shell() {
   const { route, go } = useNav();
   const view = route.view;
+
+  // Jump back to the top whenever the screen (or the open game) changes, so a
+  // card clicked far down the homepage doesn't drop you mid-way down the new
+  // page. Keyed on the game id too, so hopping between related games re-scrolls.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [view, route.gameId]);
 
   return (
     <div className="shell">
