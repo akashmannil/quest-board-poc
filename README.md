@@ -24,6 +24,9 @@ npm install
 npm run dev
 ```
 
+First visit gets an arcade attract screen ("WELCOME, PLAYER ONE") that explains
+the loop in three panels; the **Guide** tab keeps the full manual.
+
 Then play the loop: browse the **Discover** homepage → open a game to read its
 reviews and meet the devs → accept a few quests → hit **▶ Autoplay** → watch
 **My Dashboard** climb the S-curve, check what the dev's money bought in
@@ -67,6 +70,7 @@ write-up in [docs/commits/](docs/commits/) aimed at beginners and non-coders:
 | 14 | [Line-height + scroll-to-top feel fixes](docs/commits/14_commit.md) |
 | 15 | [Motion & feel: smooth animations everywhere](docs/commits/15_commit.md) |
 | 16 | [The Player's Guide: a manual that can't lie](docs/commits/16_commit.md) |
+| 17 | [The attract screen: welcoming Player One](docs/commits/17_commit.md) |
 
 ## How the incentive math works (short version)
 

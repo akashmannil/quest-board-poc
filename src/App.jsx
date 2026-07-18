@@ -1,9 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AppProvider } from "./state/AppState.jsx";
 import { NavProvider, useNav } from "./state/Nav.jsx";
 import DayControls from "./components/DayControls.jsx";
 import PixelIcon from "./components/PixelIcon.jsx";
 import Logo from "./components/Logo.jsx";
+import IntroModal, {
+  introAlreadySeen,
+  markIntroSeen,
+} from "./components/IntroModal.jsx";
 import Discover from "./views/Discover.jsx";
 import QuestBoard from "./views/QuestBoard.jsx";
 import PromoterDashboard from "./views/PromoterDashboard.jsx";
@@ -24,6 +28,14 @@ const TABS = [
 function Shell() {
   const { route, go } = useNav();
   const view = route.view;
+
+  // First visit only: the arcade welcome screen. Dismissing it (any way)
+  // sets the localStorage flag; the Guide can bring it back for a rewatch.
+  const [showIntro, setShowIntro] = useState(() => !introAlreadySeen());
+  const closeIntro = () => {
+    markIntroSeen();
+    setShowIntro(false);
+  };
 
   // Jump back to the top whenever the screen (or the open game) changes, so a
   // card clicked far down the homepage doesn't drop you mid-way down the new
@@ -76,12 +88,22 @@ function Shell() {
           ) : view === "trust" ? (
             <TrustSafety />
           ) : view === "guide" ? (
-            <Guide />
+            <Guide onReplayIntro={() => setShowIntro(true)} />
           ) : (
             <GamePage />
           )}
         </div>
       </main>
+
+      {showIntro && (
+        <IntroModal
+          onClose={closeIntro}
+          onGuide={() => {
+            closeIntro();
+            go("guide");
+          }}
+        />
+      )}
     </div>
   );
 }

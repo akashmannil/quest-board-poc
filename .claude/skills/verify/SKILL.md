@@ -47,6 +47,11 @@ There are no stable test ids; click by text via `document.querySelectorAll` +
 
 ## Gotchas
 
+- A fresh browser profile gets the first-run intro overlay (`.intro-overlay`),
+  which blocks clicks on everything behind it. Dismiss it first — click
+  `.intro-start` — or pre-seed the flag before load:
+  `localStorage.setItem("questboard.introSeen.v1", "1")`. Clearing that key
+  re-arms the intro for testing it.
 - The simulation is deterministic (seed 20260704) — expect the *same* numbers
   run-to-run; a diff in observed values means a code change, not noise.
 - Balance checks are faster headless: `node -e "import('./src/engine/simulation.js').then(...)"`

@@ -1943,6 +1943,206 @@ button:active {
   padding-bottom: 8px;
 }
 
+/* ---------------- first-run intro (arcade attract screen) ---------------- */
+
+/* z-index 9998: deliberately *below* the CRT scanlines at 9999, so the
+   welcome screen renders inside the cabinet like everything else */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(4, 3, 12, 0.82);
+  backdrop-filter: blur(3px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  overflow-y: auto;
+  animation: fadeIn 0.25s var(--ease) both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.intro-card {
+  max-width: 680px;
+  width: 100%;
+  padding: 26px 28px;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  text-align: center;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(120deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple), var(--neon-pink))
+      border-box;
+  background-size: 100% 100%, 300% 100%;
+  animation: riseIn 0.4s var(--ease) both, borderFlow 9s linear infinite;
+  box-shadow: 0 0 40px rgba(166, 107, 255, 0.35);
+}
+
+.intro-coin {
+  font: 9px var(--font-pixel);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--neon-amber);
+  text-shadow: 0 0 8px rgba(255, 201, 51, 0.6);
+  animation: coinBlink 1.2s steps(1) infinite;
+}
+
+@keyframes coinBlink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0.25; }
+}
+
+.intro-mark {
+  filter: drop-shadow(0 0 10px rgba(255, 46, 196, 0.5));
+}
+
+.intro-title {
+  font-size: 17px;
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px rgba(255, 46, 196, 0.7);
+}
+
+.intro-title span {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+}
+
+.intro-lede {
+  font-size: 18px;
+  color: var(--text-dim);
+  max-width: 540px;
+}
+
+.intro-lede em {
+  color: var(--text);
+  font-style: normal;
+  text-shadow: 0 0 8px rgba(238, 233, 255, 0.35);
+}
+
+.intro-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.intro-step {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  align-content: start;
+  padding: 14px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.intro-step-num {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  font: 9px var(--font-pixel);
+  color: var(--text-faint);
+}
+
+.intro-step h3 {
+  font-size: 9px;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.intro-step p {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
+@media (max-width: 620px) {
+  .intro-steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+.intro-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  padding: 12px 14px;
+  background: rgba(255, 201, 51, 0.06);
+  border: 1px solid var(--neon-amber);
+  box-shadow: 0 0 12px rgba(255, 201, 51, 0.15);
+}
+
+.intro-note p {
+  font-size: 16px;
+  color: var(--text-dim);
+}
+
+.intro-note strong {
+  font-weight: 400;
+  color: var(--neon-amber);
+  text-shadow: 0 0 6px rgba(255, 201, 51, 0.4);
+}
+
+.intro-note b {
+  font-weight: 400;
+  color: var(--neon-cyan);
+}
+
+.intro-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.intro-start {
+  padding: 12px 18px;
+  font-size: 10px;
+}
+
+.intro-guide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: var(--surface-2);
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+}
+
+.intro-guide-btn:hover {
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark),
+    0 0 14px rgba(0, 240, 255, 0.35);
+}
+
+/* the quiet signpost on Discover until the first quest is accepted */
+.new-player-hint {
+  font-size: 16px;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.new-player-hint .linklike {
+  font-size: 16px;
+}
+
 /* ====================================================================== */
 /* Motion & effects — the "responsive app" layer.                         */
 /* Everything the user touches gets a smooth transition; every screen and  */
@@ -2186,7 +2386,8 @@ button:active {
     transition-duration: 0.001ms !important;
   }
 
-  .hero {
+  .hero,
+  .intro-card {
     /* freeze the gradient border at a pleasant position */
     animation: none;
     background:

@@ -87,7 +87,10 @@ function MomentumRow({ row, onOpen }) {
 
 export default function Discover() {
   const { state } = useApp();
-  const { browseGenre } = useNav();
+  const { browseGenre, go } = useNav();
+
+  // until the first quest is accepted, keep one quiet signpost to the manual
+  const isNewPlayer = !state.claims.some((c) => c.promoterId === "you");
 
   const featured = featuredGame(state);
   const rec = recommendedGames(state, 6);
@@ -116,6 +119,15 @@ export default function Discover() {
           clickable — open a game to read reviews, meet the devs, and take the
           quest.
         </p>
+        {isNewPlayer && (
+          <p className="new-player-hint">
+            <PixelIcon name="book" size={12} /> First time on the board?{" "}
+            <button className="linklike" onClick={() => go("guide")}>
+              The Player's Guide
+            </button>{" "}
+            explains the whole loop in two minutes.
+          </p>
+        )}
       </div>
 
       {featured && <FeaturedHero game={featured} />}
