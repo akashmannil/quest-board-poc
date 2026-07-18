@@ -10,6 +10,7 @@ import PromoterDashboard from "./views/PromoterDashboard.jsx";
 import DevHQ from "./views/DevHQ.jsx";
 import TrustSafety from "./views/TrustSafety.jsx";
 import GamePage from "./views/GamePage.jsx";
+import Guide from "./views/Guide.jsx";
 
 const TABS = [
   { id: "discover", label: "Discover", icon: "gem" },
@@ -17,6 +18,7 @@ const TABS = [
   { id: "promoter", label: "My Dashboard", icon: "chart" },
   { id: "dev", label: "Dev HQ", icon: "gamepad" },
   { id: "trust", label: "Trust & Safety", icon: "shield" },
+  { id: "guide", label: "Guide", icon: "book" },
 ];
 
 function Shell() {
@@ -73,6 +75,8 @@ function Shell() {
             <DevHQ />
           ) : view === "trust" ? (
             <TrustSafety />
+          ) : view === "guide" ? (
+            <Guide />
           ) : (
             <GamePage />
           )}

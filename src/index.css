@@ -1708,6 +1708,241 @@ button:active {
   margin-top: 4px;
 }
 
+/* ---------------- player's guide ---------------- */
+
+.guide {
+  display: grid;
+  gap: 22px;
+}
+
+.guide-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+.guide-card {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.guide-card p {
+  font-size: 17px;
+  color: var(--text-dim);
+}
+
+.guide-card em {
+  color: var(--text);
+  font-style: normal;
+  text-shadow: 0 0 8px rgba(238, 233, 255, 0.35);
+}
+
+.guide-card b {
+  font-weight: 400;
+  color: var(--neon-cyan);
+}
+
+/* the one-line economy, printed like a cheat code */
+.guide-formula {
+  justify-self: start;
+  font: 10px var(--font-pixel);
+  color: var(--neon-green);
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+  background: #000;
+  border: 1px solid var(--neon-green);
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.2);
+  padding: 10px 14px;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.guide-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.guide-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.guide-step-num {
+  font: 12px var(--font-pixel);
+  color: var(--neon-pink);
+  text-shadow: 0 0 8px rgba(255, 46, 196, 0.55);
+  padding-top: 2px;
+}
+
+.guide-steps strong {
+  font-weight: 400;
+  color: var(--text);
+}
+
+.guide-mechanics {
+  gap: 12px;
+}
+
+.guide-mech {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 12px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.guide-mech h4 {
+  font-size: 9px;
+  color: var(--neon-amber);
+  text-shadow: 0 0 8px rgba(255, 201, 51, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.guide-mech p {
+  font-size: 16px;
+}
+
+.guide-weights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 5px;
+  font-size: 16px;
+}
+
+.guide-weights li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-dim);
+}
+
+.guide-weights b {
+  margin-left: auto;
+  font-weight: 400;
+  color: var(--neon-green);
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.4);
+}
+
+.guide-ladder-title {
+  font-size: 9px;
+  color: var(--neon-purple);
+  text-shadow: 0 0 8px rgba(166, 107, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 6px;
+}
+
+.tier-ladder {
+  display: grid;
+  gap: 6px;
+}
+
+.tier-rung {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 16px;
+}
+
+.tier-rung-name {
+  font: 9px var(--font-pixel);
+  text-transform: uppercase;
+}
+
+.tier-rung-score {
+  color: var(--text-faint);
+  font-size: 15px;
+}
+
+.tier-rung-mult {
+  margin-left: auto;
+  font: 10px var(--font-pixel);
+  font-weight: 400;
+  color: var(--neon-green);
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.45);
+}
+
+.guide-fineprint {
+  font-size: 16px;
+  color: var(--text-faint);
+}
+
+.screen-map {
+  display: grid;
+  gap: 8px;
+}
+
+.screen-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  padding: 12px 14px;
+  background: var(--surface-2);
+  color: var(--text);
+  text-transform: none;
+}
+
+.screen-row:hover {
+  border-color: var(--neon-cyan);
+  box-shadow:
+    inset 2px 2px 0 var(--bevel-light),
+    inset -2px -2px 0 var(--bevel-dark),
+    0 0 14px rgba(0, 240, 255, 0.25);
+}
+
+.screen-row-body {
+  display: grid;
+  gap: 3px;
+  flex: 1;
+}
+
+.screen-row-name {
+  font: 10px var(--font-pixel);
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.screen-row-blurb {
+  font: 16px var(--font-body);
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
+.screen-row-go {
+  font: 9px var(--font-pixel);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+  white-space: nowrap;
+}
+
+.guide-replay {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
 /* ====================================================================== */
 /* Motion & effects — the "responsive app" layer.                         */
 /* Everything the user touches gets a smooth transition; every screen and  */
@@ -1752,6 +1987,7 @@ button:active {
 .view-anim .shelf-row > *,
 .view-anim .genre-grid > *,
 .view-anim .momentum-list > *,
+.view-anim .guide > *,
 .view-anim .game-layout > * {
   animation: riseIn 0.42s var(--ease) both;
 }

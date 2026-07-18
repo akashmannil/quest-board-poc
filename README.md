@@ -38,6 +38,7 @@ reviews and meet the devs → accept a few quests → hit **▶ Autoplay** → w
 | 📈 My Dashboard | Exposure Score, tier, streak, the payout curve, daily earnings, leaderboard |
 | 🎮 Dev HQ | Budget spent, cost per wishlist, and per-promoter attribution (the receipt) |
 | 🛡️ Trust & Safety | The anti-fraud defenses and the live log of voided bot traffic |
+| 📖 Guide | The player's manual — every number on it rendered live from the engine, so it can't drift |
 
 Every game also has its own **detail page** — wishlists-over-time chart, the
 quest action panel, a developer profile, top promoters, player reviews (write
@@ -65,6 +66,7 @@ write-up in [docs/commits/](docs/commits/) aimed at beginners and non-coders:
 | 13 | [The full game page: stats, devs, reviews & related](docs/commits/13_commit.md) |
 | 14 | [Line-height + scroll-to-top feel fixes](docs/commits/14_commit.md) |
 | 15 | [Motion & feel: smooth animations everywhere](docs/commits/15_commit.md) |
+| 16 | [The Player's Guide: a manual that can't lie](docs/commits/16_commit.md) |
 
 ## How the incentive math works (short version)
 

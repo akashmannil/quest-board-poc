@@ -213,6 +213,16 @@ const ICONS = {
     ".XX.....",
     "XX......",
   ],
+  book: [
+    "........",
+    "XXX..XXX",
+    "X..XX..X",
+    "X..XX..X",
+    "X..XX..X",
+    "X..XX..X",
+    ".XXXXXX.",
+    "........",
+  ],
 };
 
 // UI mappings: which pixel icon stands for each outcome type and tier.
