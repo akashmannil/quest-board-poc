@@ -128,7 +128,10 @@ p {
 }
 
 button {
+  /* the `font` shorthand resets line-height to `normal` (~1.2) — far too
+     tight for a pixel font once a label wraps, so restore it explicitly */
   font: 10px var(--font-pixel);
+  line-height: 1.5;
   text-transform: uppercase;
   cursor: pointer;
   border: 2px solid #000;
@@ -152,6 +155,21 @@ button:active {
   box-shadow:
     inset -2px -2px 0 var(--bevel-light),
     inset 2px 2px 0 var(--bevel-dark);
+}
+
+/* Clickable cards are <button>s for accessibility, but their *content* is
+   body copy — pitches, studios, counts at VT323-scale sizes (13–18px). The
+   button reset above was silently flipping all of it to uppercase pixel
+   font at line-height normal (the quest cards, which are divs, never had
+   the problem). Give these wrappers reading defaults back; every pixel
+   accent inside them (kickers, CTAs, growth badges) declares its own font. */
+.hero,
+.game-card,
+.momentum-row,
+.genre-chip {
+  font-family: var(--font-body);
+  text-transform: none;
+  line-height: 1.5;
 }
 
 /* ---------------- app shell ---------------- */
@@ -599,6 +617,7 @@ button:active {
 
 .stat-label {
   font: 8px var(--font-pixel);
+  line-height: 1.5;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text-faint);
@@ -876,6 +895,7 @@ button:active {
 .data-table th {
   text-align: left;
   font: 8px var(--font-pixel);
+  line-height: 1.5;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text-faint);
@@ -1127,6 +1147,7 @@ button:active {
 
 .shelf-head h3 {
   font: 11px var(--font-pixel);
+  line-height: 1.5;
   color: var(--neon-cyan);
   text-shadow: 0 0 8px rgba(0, 240, 255, 0.45);
   text-transform: uppercase;
@@ -1940,7 +1961,7 @@ button:active {
 
 .screen-row-blurb {
   font: 16px var(--font-body);
-  line-height: 1.4;
+  line-height: 1.5;
   color: var(--text-dim);
 }
 
@@ -2074,7 +2095,7 @@ button:active {
 
 .intro-step p {
   font-size: 15px;
-  line-height: 1.4;
+  line-height: 1.5;
   color: var(--text-dim);
 }
 

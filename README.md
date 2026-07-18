@@ -72,6 +72,7 @@ write-up in [docs/commits/](docs/commits/) aimed at beginners and non-coders:
 | 16 | [The Player's Guide: a manual that can't lie](docs/commits/16_commit.md) |
 | 17 | [The attract screen: welcoming Player One](docs/commits/17_commit.md) |
 | 18 | [Phone-width fix: teaching grids to let go](docs/commits/18_commit.md) |
+| 19 | [Breathing room: the button that stole the fonts](docs/commits/19_commit.md) |
 
 ## How the incentive math works (short version)
 
