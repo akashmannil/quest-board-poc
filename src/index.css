@@ -658,6 +658,13 @@ button:active {
   gap: 20px;
 }
 
+/* same shrink permission as .discover-split: a card holding a wide table
+   or chart must scroll inside itself, not stretch the page on a phone */
+.dash-grid > *,
+.game-layout > * {
+  min-width: 0;
+}
+
 @media (max-width: 520px) {
   .dash-grid {
     grid-template-columns: 1fr;
@@ -1149,6 +1156,13 @@ button:active {
   grid-template-columns: 1.4fr 1fr;
   gap: 24px;
   margin-bottom: 8px;
+}
+
+/* Grid items default to min-width:auto, so a shelf's scroll-row (4 cards
+   × 210px min) would force the column — and the whole page — to ~800px on
+   a phone. Let the items shrink; the row scrolls inside itself instead. */
+.discover-split > * {
+  min-width: 0;
 }
 
 @media (max-width: 820px) {

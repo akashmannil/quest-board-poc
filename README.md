@@ -71,6 +71,7 @@ write-up in [docs/commits/](docs/commits/) aimed at beginners and non-coders:
 | 15 | [Motion & feel: smooth animations everywhere](docs/commits/15_commit.md) |
 | 16 | [The Player's Guide: a manual that can't lie](docs/commits/16_commit.md) |
 | 17 | [The attract screen: welcoming Player One](docs/commits/17_commit.md) |
+| 18 | [Phone-width fix: teaching grids to let go](docs/commits/18_commit.md) |
 
 ## How the incentive math works (short version)
 

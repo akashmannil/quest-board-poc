@@ -199,6 +199,7 @@ export default function PromoterDashboard() {
 
         <div className="card">
           <h3>Leaderboard</h3>
+          <div className="table-scroll">
           <table className="data-table">
             <thead>
               <tr>
@@ -224,6 +225,7 @@ export default function PromoterDashboard() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
         <div className="card">
@@ -231,6 +233,7 @@ export default function PromoterDashboard() {
           {myClaims.length === 0 ? (
             <p className="empty-note">Nothing yet — accept a quest to start earning.</p>
           ) : (
+            <div className="table-scroll">
             <table className="data-table">
               <thead>
                 <tr>
@@ -258,6 +261,7 @@ export default function PromoterDashboard() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
 
@@ -266,6 +270,7 @@ export default function PromoterDashboard() {
           {activity.length === 0 ? (
             <p className="empty-note">Outcomes from your links will show up here.</p>
           ) : (
+            <div className="table-scroll">
             <table className="data-table">
               <thead>
                 <tr>
@@ -301,6 +306,7 @@ export default function PromoterDashboard() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
       </div>
